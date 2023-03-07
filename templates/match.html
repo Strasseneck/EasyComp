@@ -7,31 +7,56 @@
         <title>Match</title>
     </head>
     <body>
-        <div class="container">
-            <h1>Score</h1>
-            <span id="scoreboard">0</span>
-            <h2>Advantages</h2>
-            <span id="advantages">0</span>
-            <h2>Penalties</h2>
-            <span id="penalties">0</span>
-            <div class="btn-container">
-                <button id="addbtn" class="btn +4pts">+4pts</button>
-                <button id="addbtn" class="btn +3pts">+3pts</button>
-                <button id="addbtn" class="btn +2pts">+2pts</button>
-                <button id="addbtn" class="btn +advantage">+adv</button>
-                <button id="addbtn" class="btn +penalty">+pen</button>
-            </div>
-            <div class="row">
+        <div id="parent" class="container">
+            <div class="container">
+                <h1>Competitor One</h1>
+                <span id="scoreboard1">0</span>
+                <h2>Advantages</h2>
+                <span id="advantages1">0</span>
+                <h2>Penalties</h2>
+                <span id="penalties1">0</span>
                 <div class="btn-container">
-                <button id="subbtn" class="btn -4pts">-4pts</button>
-                <button id="subbtn" class="btn -3pts">-3pts</button>
-                <button id="subbtn" class="btn -2pts">-2pts</button>
-                <button id="subbtn" class="btn -advantage">-adv</button>
-                <button id="subbtn" class="btn -penalty">-pen</button>
+                    <button id="addbtn" class="btn1 +4pts">+4pts</button>
+                    <button id="addbtn" class="btn1 +3pts">+3pts</button>
+                    <button id="addbtn" class="btn1 +2pts">+2pts</button>
+                    <button id="addbtn" class="btn1 +advantage">+adv</button>
+                    <button id="addbtn" class="btn1 +penalty">+pen</button>
+                </div>
+                <div class="row">
+                    <div class="btn-container">
+                    <button id="subbtn" class="btn1 -4pts">-4pts</button>
+                    <button id="subbtn" class="btn1 -3pts">-3pts</button>
+                    <button id="subbtn" class="btn1 -2pts">-2pts</button>
+                    <button id="subbtn" class="btn1 -advantage">-adv</button>
+                    <button id="subbtn" class="btn1 -penalty">-pen</button>
+                    </div>
                 </div>
             </div>
+                <div class="container">
+                    <h1>Competitor Two</h1>
+                    <span id="scoreboard2">0</span>
+                    <h2>Advantages</h2>
+                    <span id="advantages2">0</span>
+                    <h2>Penalties</h2>
+                    <span id="penalties2">0</span>
+                    <div class="btn-container">
+                        <button id="addbtn" class="btn2 +4pts">+4pts</button>
+                        <button id="addbtn" class="btn2 +3pts">+3pts</button>
+                        <button id="addbtn" class="btn2 +2pts">+2pts</button>
+                        <button id="addbtn" class="btn2 +advantage">+adv</button>
+                        <button id="addbtn" class="btn2 +penalty">+pen</button>
+                    </div>
+                    <div class="row">
+                        <div class="btn-container">
+                        <button id="subbtn" class="btn2 -4pts">-4pts</button>
+                        <button id="subbtn" class="btn2 -3pts">-3pts</button>
+                        <button id="subbtn" class="btn2 -2pts">-2pts</button>
+                        <button id="subbtn" class="btn2 -advantage">-adv</button>
+                        <button id="subbtn" class="btn2 -penalty">-pen</button>
+                        </div>
+                    </div>
+                </div>
         </div>
-
         <script src="main.js"></script>
     </body>
 
