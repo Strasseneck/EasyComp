@@ -5,8 +5,8 @@ const btnPause = document.querySelector(".btn-pause");
 // clock variables
 const clock = document.getElementById('clock');
 let clockInterval;
-mins = 00;
-secs = 15;
+mins = 09;
+secs = 60;
 let paused = false;
 
 // start clock function

@@ -1,17 +1,17 @@
 .container {
-    height: 100vh;
-    width: 100vh;
     justify-content: center;
     align-items: center;
+    flex-shrink: 1;
     display: flex;
     flex-direction: column;
 }
 
-.btn-container-score {
-    flex-direction: row;
+
+.secondaryscore {
+    font-size: 50px;
 }
 
-#parent {
+.container-fluid {
     display: flex;
     flex-direction: row;
 }
@@ -26,8 +26,27 @@ span {
 
 }
 
+.btn-start {
+    background:none;
+    outline: none;
+    padding: 10px;
+    border-radius: 10px;
+    color: green;
+}
+
+.btn-pause {
+    background:none;
+    outline: none;
+    padding: 10px;
+    border-radius: 10px;
+    color: red;
+}
+
 .btn1, .btn2 {
     background: none;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
     outline: none;
     border: 1px solid black;
     padding: 10px;
