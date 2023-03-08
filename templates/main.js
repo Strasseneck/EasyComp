@@ -5,10 +5,11 @@ const btnPause = document.querySelector(".btn-pause");
 // clock variables
 const clock = document.getElementById('clock');
 let clockInterval;
-mins = 09;
-secs = 59;
+mins = 01;
+secs = 10;
+let paused = false;
 
-// clock functions
+// start clock function
 startClock = () => {
     clockInterval = setInterval(function() {
 
@@ -17,6 +18,7 @@ startClock = () => {
     if (mins < 10) {
         displayTime += '0' + mins;
     }
+   
     else {
         displayTime += mins;
     }
@@ -30,7 +32,7 @@ startClock = () => {
         displayTime += ':' + secs;
     }
 
-    // add second
+    // subtract second
     secs--;
 
     // check if seconds are 0
@@ -38,14 +40,24 @@ startClock = () => {
         mins--;
         secs = 60;
     }
+
+    else if (mins == -1) {
+        clearInterval(clockInterval);
+        displayTime = '00:00';
+    }
+
+    // update clock innerhtml
     clock.innerHTML = displayTime;
+    
+    // capture value for pause
+    pausedTime = displayTime;
 
-    //when i hits zero stop and text read
-
-    //pause by capturing value when pause is clicked
-
-    //store this and start the loop again
-
+    // pause clock function
+    pauseClock = () => {
+        paused = true;
+        clearInterval(clockInterval)
+        clock.innerHTML = pausedTime;
+    }
     }, 1000);
 };
 
