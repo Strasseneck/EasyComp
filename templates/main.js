@@ -5,13 +5,17 @@ const btnPause = document.querySelector(".btn-pause");
 // clock variables
 const clock = document.getElementById('clock');
 let clockInterval;
-mins = 01;
-secs = 10;
+mins = 00;
+secs = 15;
 let paused = false;
 
 // start clock function
 startClock = () => {
     clockInterval = setInterval(function() {
+    clock.style.color = 'green';
+
+    // subtract second
+    secs--;
 
     // clock display formatting
     let displayTime = '';
@@ -25,6 +29,7 @@ startClock = () => {
     if (secs < 10) {
         displayTime += ':0' + secs;
     }
+
     else if (secs == 60) {
         displayTime += ':00';
     }
@@ -32,23 +37,15 @@ startClock = () => {
         displayTime += ':' + secs;
     }
 
-    // subtract second
-    secs--;
-
     // check if seconds are 0
     if (secs == 0) {
         mins--;
         secs = 60;
     }
 
-    else if (mins == -1) {
-        clearInterval(clockInterval);
-        displayTime = '00:00';
-    }
-
     // update clock innerhtml
     clock.innerHTML = displayTime;
-    
+   
     // capture value for pause
     pausedTime = displayTime;
 
@@ -58,10 +55,19 @@ startClock = () => {
         clearInterval(clockInterval)
         clock.innerHTML = pausedTime;
     }
+
+    if (mins == 0 && secs < 10) {
+        clock.style.color = 'red';
+    }
+
+    if (mins == -1) {
+        clock.style.color = 'red';
+        clearInterval(clockInterval);
+        displayTime = '00:00';
+    }
+
     }, 1000);
 };
-
-
 
 // buttons and score text competitor one
 const scoreboard = document.querySelector('#scoreboard1')
