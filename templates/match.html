@@ -39,8 +39,22 @@
                 <h1 id="clock">10:00</h1>
                 <button onclick="startClock()" class="btn-start">Start</button>
                 <button onclick="pauseClock()" class="btn-pause">Pause</button>
+                <br>
+                <select id="victory-form" class="form-select" aria-label="victory">
+                    <option selected>Choose Winner</option>
+                    <option value ="1">Competitor One</option>                      
+                    <option value ="2">Competitor Two</option>
+                </select>
+                <select id="victory-method" class="form-select">
+                    <option selected>Choose Victory Method</option>
+                    <option value ="submission">Submission</option>
+                    <option value ="point">Points</option>
+                    <option value ="decision">Decision</option>
+                    <option value ="dq">DQ</option>
+                </select>
+                <button type="submit">Submit</button>
             </div>
-                <div class="container">
+                <div id="comp2" class="container">
                     <h1>Competitor Two</h1>
                     <h2>Score</h2>
                     <span id="scoreboard2">0</span>
@@ -48,15 +62,13 @@
                     <span id="advantages2" class="secondaryscore">0</span>
                     <h5>Penalties</h5>
                     <span id="penalties2" class="secondaryscore">0</span>
-                    
                         <div class="btn-group">
                             <button id="addbtn" class="btn2 +4pts">+4pts</button>
                             <button id="addbtn" class="btn2 +3pts">+3pts</button>
                             <button id="addbtn" class="btn2 +2pts">+2pts</button>
                             <button id="addbtn" class="btn2 +advantage">+adv</button>
                             <button id="addbtn" class="btn2 +penalty">+pen</button>
-                        </div>
-                    
+                        </div>                   
                     <div class="row">
                         <div class="btn-group">
                             <button id="subbtn" class="btn2 -4pts">-4pts</button>
