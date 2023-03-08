@@ -1,3 +1,56 @@
+// clock buttons
+const btnStart = document.querySelector(".btn-start");
+const btnPause = document.querySelector(".btn-pause");
+
+// clock variables
+const clock = document.getElementById('clock');
+let clockInterval;
+mins = 09;
+secs = 59;
+
+// clock functions
+startClock = () => {
+    clockInterval = setInterval(function() {
+
+    // clock display formatting
+    let displayTime = '';
+    if (mins < 10) {
+        displayTime += '0' + mins;
+    }
+    else {
+        displayTime += mins;
+    }
+    if (secs < 10) {
+        displayTime += ':0' + secs;
+    }
+    else if (secs == 60) {
+        displayTime += ':00';
+    }
+    else {
+        displayTime += ':' + secs;
+    }
+
+    // add second
+    secs--;
+
+    // check if seconds are 0
+    if (secs == 0) {
+        mins--;
+        secs = 60;
+    }
+    clock.innerHTML = displayTime;
+
+    //when i hits zero stop and text read
+
+    //pause by capturing value when pause is clicked
+
+    //store this and start the loop again
+
+    }, 1000);
+};
+
+
+
 // buttons and score text competitor one
 const scoreboard = document.querySelector('#scoreboard1')
 const advantages = document.querySelector('#advantages1')
@@ -51,9 +104,6 @@ btns.forEach((btn) => {
         }
         else if(styles.contains('-2pts')) {
             score1 -= 2;
-        }
-        else if(styles.contains('-advantage')) {
-            adv1 --;
         }
         else if(styles.contains('-penalty')) {
             pen1 --;

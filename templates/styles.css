@@ -7,6 +7,10 @@
     flex-direction: column;
 }
 
+.btn-container-score {
+    flex-direction: row;
+}
+
 #parent {
     display: flex;
     flex-direction: row;

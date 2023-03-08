@@ -7,13 +7,19 @@
         <title>Match</title>
     </head>
     <body>
+        <div class="container">
+            <h1 id="clock">10:00</h1>
+            <button onclick ="startClock()" class="btn-start">Start</button>
+            <button class="btn-pause">Pause</button>
+        </div>
+
         <div id="parent" class="container">
             <div class="container">
                 <h1>Competitor One</h1>
                 <span id="scoreboard1">0</span>
-                <h2>Advantages</h2>
+                <h4>Advantages</h4>
                 <span id="advantages1">0</span>
-                <h2>Penalties</h2>
+                <h4>Penalties</h4>
                 <span id="penalties1">0</span>
                 <div class="btn-container">
                     <button id="addbtn" class="btn1 +4pts">+4pts</button>
@@ -35,9 +41,9 @@
                 <div class="container">
                     <h1>Competitor Two</h1>
                     <span id="scoreboard2">0</span>
-                    <h2>Advantages</h2>
+                    <h4>Advantages</h4>
                     <span id="advantages2">0</span>
-                    <h2>Penalties</h2>
+                    <h4>Penalties</h4>
                     <span id="penalties2">0</span>
                     <div class="btn-container">
                         <button id="addbtn" class="btn2 +4pts">+4pts</button>
@@ -59,5 +65,4 @@
         </div>
         <script src="main.js"></script>
     </body>
-
 </html>
