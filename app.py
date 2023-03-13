@@ -13,7 +13,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required
 
 # configure application
-app = Flask(_name_)
+app = Flask(__name__)
 
 # Configure session to use file system 
 app.config["SESSION_PERMANENT"] = False
@@ -33,20 +33,68 @@ def after_request(response):
 
 
 #TO DO INDEX
+@app.route("/")
+def index():
+    return apology("Not finished", 400)
 
 #TO CREATE COMPETITON
+@app.route("/create")
+def create():
+    return apology("Not finished", 400)
 
 #TO DO MANAGE COMPETITON
+@app.route("/manage")
+def manage():
+    return apology("Not finished", 400)
 
 #TO DO ENTER COMPETITON
+@app.route("/enter")
+def enter():
+    return apology("Not finished", 400)
 
-#TO DO LOG IN
+# login
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    # forget user_id
+    session.clear()
+
+    # user reached via POST
+    if request.method == "POST":
+
+        # ensure username
+        if not request.form.get("username"):
+            return apology("username required", 403)
+        
+        # ensure password
+        if not request.form.get("password"):
+            return apology ("password required", 403)
+        
+        # query db for user
+        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+
+        # ensure username exist and password is correct
+        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+            return apology("invalid username and/or password", 403)
+        
+        # store user_id as session user_id
+        session["user_id"] = rows[0]["id"]
+
+        # redirect to front page
+        return redirect("/")
+    
+    # user reached via GET
+    else:
+        return render_template("login.html")
 
 #TO DO LOG OUT
+@app.route("/logout")
+def logout():
+    return apology("Not finished", 400)
 
 # Register
-@app.route("/register", method=["GET", "POST"])
-def register()
+@app.route("/register", methods=["GET", "POST"])
+def register():
     
     # if reached via POST
     if request.method == "POST":
@@ -72,11 +120,12 @@ def register()
         password = request.form.get("password")
         hash = generate_password_hash(password)
 
-        # add new user to database
+        # get values for db
         username = request.form.get("username")
         firstname = request.form.get("firstname")
         lastname = request.form.get("lastname")
-        dob = request.form.get("dob")
+        DOB = request.form.get("dob")
+        # Boolean values for use type, competitor and/or organizer
         if request.form.get("organizer"):
             organizer = int(1)
         else:
@@ -85,6 +134,15 @@ def register()
             competitor = int(1)
         else:
             competitor = int(0)
+        # add new user to db
+        rows = db.execute("INSERT INTO users (username, hash, firstname, lastname, DOB, organizer, competitor) VALUES (?,?,?,?,?,?,?)",
+                           username, hash, firstname, lastname, DOB, organizer, competitor)
         
+        # redirect to long
+        return redirect("/")
+
+    # if reached by get
+    else:
+        return render_template("register.html")
 
 
