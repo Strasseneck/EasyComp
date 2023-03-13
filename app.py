@@ -41,13 +41,11 @@ def index():
     rows = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
     # get user data to display
     username = rows[0]["username"]
-    firstname = rows[0]["first_name"]
-    lastname = rows[0]["last_name"]
-    organizer = rows[0]["organizer"]
-    competitor = rows[0]["competitor"]
+    firstname = rows[0]["firstname"]
+    lastname = rows[0]["lastname"]
 
     # render template
-    return render_template("index.html", username=username, firstname=firstname, lastname=lastname, organizer=organizer, competitor=competitor)
+    return render_template("index.html", username=username, firstname=firstname, lastname=lastname)
    
 
 #TO CREATE COMPETITON
