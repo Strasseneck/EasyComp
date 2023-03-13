@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<h2>Profile</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>First Name | capitalize</th>
+            <th>Last Nam | capitalize</th>
+            <th>Organizer</th>
+            <th>Competitor</th>
+            <th>Competitions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ username }}</td>
+            <td>{{ firstname }}</td>
+            <td>{{ lastname }}</td>
+            <td>{{ organizer }}</td>
+            <td>{{ competitor }}</td>
+            <td> Competitions TO DO</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
+

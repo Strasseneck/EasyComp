@@ -34,8 +34,21 @@ def after_request(response):
 
 #TO DO INDEX
 @app.route("/")
+@login_required
 def index():
-    return apology("Not finished", 400)
+
+    # select user data
+    rows = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
+    # get user data to display
+    username = rows[0]["username"]
+    firstname = rows[0]["first_name"]
+    lastname = rows[0]["last_name"]
+    organizer = rows[0]["organizer"]
+    competitor = rows[0]["competitor"]
+
+    # render template
+    return render_template("index.html", username=username, firstname=firstname, lastname=lastname, organizer=organizer, competitor=competitor)
+   
 
 #TO CREATE COMPETITON
 @app.route("/create")
@@ -87,10 +100,16 @@ def login():
     else:
         return render_template("login.html")
 
-#TO DO LOG OUT
+# log out
 @app.route("/logout")
 def logout():
-    return apology("Not finished", 400)
+
+    # forget user_id
+    session.clear()
+
+    # redirect to login
+    return redirect("/")
+
 
 # Register
 @app.route("/register", methods=["GET", "POST"])
@@ -104,12 +123,12 @@ def register():
             return apology("username creation required", 400)
         
         # check for duplicate username
-        rows = db.execute("SELECT * FROM USERS WHERE username = ?", request.form.get("username"))
+        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
         if len(rows) > 0:
             return apology("username already taken", 400)
         
         # check for password creation
-        elif not request.form.get("passsword"):
+        elif not request.form.get("password"):
             return apology("password creation required", 400)
         
         # check for password match via confirmation
@@ -124,21 +143,11 @@ def register():
         username = request.form.get("username")
         firstname = request.form.get("firstname")
         lastname = request.form.get("lastname")
-        DOB = request.form.get("dob")
-        # Boolean values for use type, competitor and/or organizer
-        if request.form.get("organizer"):
-            organizer = int(1)
-        else:
-            organizer = int(0)
-        if request.form.get("competitor"):
-            competitor = int(1)
-        else:
-            competitor = int(0)
         # add new user to db
-        rows = db.execute("INSERT INTO users (username, hash, firstname, lastname, DOB, organizer, competitor) VALUES (?,?,?,?,?,?,?)",
-                           username, hash, firstname, lastname, DOB, organizer, competitor)
+        rows = db.execute("INSERT INTO users (username, hash, firstname, lastname) VALUES (?,?,?,?)",
+                           username, hash, firstname, lastname)
         
-        # redirect to long
+        # redirect to log in
         return redirect("/")
 
     # if reached by get

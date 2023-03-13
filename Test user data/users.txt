@@ -1,0 +1,6 @@
+John Smith
+johnsmith
+01.01.1990
+organizer = yes
+competitor = no
+password = johnsmithpass
