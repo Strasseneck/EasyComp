@@ -70,24 +70,25 @@ def create():
         # get format 
         format = request.form["formatselect"]
 
-        # get belt classes
-        beltclasses = request.form.getlist("beltdivision")
+        # add new competition to competitions db
+        rows = db.execute("INSERT INTO competitions (name, format) VALUES (?,?)", compname, format)
 
+        # get comp_id for divisions db
+        rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name = ?", compname)
+        comp_id = rows[0]["id"]
+
+         # get belt classes
+        beltclasses = request.form.getlist("beltdivision")
         # get weight classes
         weightclasses = request.form.getlist("weightclass")
 
-
-        print(format)
-        print(beltclasses)
-        print(weightclasses)
-
-        return 'done'
-        # add competition to competitions db
-
-        # add divisions to divisions db
-            # get lists
-            # iterate through list
-            
+        # iterate through lists and add to divisions database
+        for i in range(len(beltclasses)):
+            for j in range(len(weightclasses)):
+                division = beltclasses[i] + weightclasses[j]
+                rows = db.execute("INSERT INTO divisions (name, comp_id) VALUES (?,?)", division, comp_id)
+        
+        return redirect("/")
      # if reached by get
     else:
         return render_template("create-comp.html")
