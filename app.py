@@ -48,11 +48,52 @@ def index():
     return render_template("index.html", username=username, firstname=firstname, lastname=lastname)
    
 
-#TO CREATE COMPETITON
-@app.route("/create")
+# creat competition
+@app.route("/create", methods=["GET", "POST"])
 @login_required
 def create():
-    return apology("Not finished", 400)
+
+    # if reached via post
+    if request.method == "POST":
+
+        # check for compname
+        if not request.form.get("compname"):
+            return apology("competition name creation required", 400)
+        
+        # check for duplicate compname
+        rows = db.execute("SELECT * FROM competitions WHERE name = ?", request.form.get("compname"))
+        if len(rows) > 0:
+            return apology("competition with same name already exists", 400)
+        else:
+            compname = request.form.get("compname")
+        
+        # get format 
+        format = request.form["formatselect"]
+
+        # get belt classes
+        beltclasses = request.form.getlist("beltdivision")
+
+        # get weight classes
+        weightclasses = request.form.getlist("weightclass")
+
+
+        print(format)
+        print(beltclasses)
+        print(weightclasses)
+
+        return 'done'
+        # add competition to competitions db
+
+        # add divisions to divisions db
+            # get lists
+            # iterate through list
+            
+     # if reached by get
+    else:
+        return render_template("create-comp.html")
+
+
+
 
 #TO DO MANAGE COMPETITON
 @app.route("/manage")

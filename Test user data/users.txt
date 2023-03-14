@@ -5,3 +5,7 @@ password = password
 Joe Bloggs
 jbloggs
 password = jbloggspass
+
+Max Musterman
+maxmusterman
+password = musterpass
