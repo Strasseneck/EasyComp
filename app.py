@@ -50,16 +50,19 @@ def index():
 
 #TO CREATE COMPETITON
 @app.route("/create")
+@login_required
 def create():
     return apology("Not finished", 400)
 
 #TO DO MANAGE COMPETITON
 @app.route("/manage")
+@login_required
 def manage():
     return apology("Not finished", 400)
 
 #TO DO ENTER COMPETITON
 @app.route("/enter")
+@login_required
 def enter():
     return apology("Not finished", 400)
 
