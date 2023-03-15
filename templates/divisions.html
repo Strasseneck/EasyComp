@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Divisions
+{% endblock %}
+
+{% block main %}
+{% for division in divisions %}
+<div class="card" style="width: 18rem;" name="competitioncard">
+    <div class="card-body">
+      <h5 class="card-title">{{division}}</h5>
+      <h6 class="card-subtitle mb-2 text-muted"></h6>
+      <p class="card-text"></p>
+      <a href="" class="card-link">Enter Division</a>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock %}

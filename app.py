@@ -112,19 +112,31 @@ def manage():
     return apology("Not finished", 400)
 
 # enter competition
-@app.route("/enter", methods=["GET", "POST"])
+@app.route("/enter", methods=["GET"])
 @login_required
 def enter():
-    
-    # if reached via GET
-    if request.method == "GET":
-        
-        # get info about competitions available to enter
-        competitions = db.execute("SELECT DISTINCT name, format FROM competitions")
-        # render template enter comp
-        return render_template("enter-comp.html", competitions=competitions)
 
-    # return render_template("enter-comp.html")
+    # get info about competitions available to enter
+    competitions = db.execute("SELECT DISTINCT name, format FROM competitions")
+    # render template enter comp
+    return render_template("enter-comp.html", competitions=competitions)
+
+@app.route("/divisions/<name>", methods=["GET", "POST"])
+@login_required
+def divisions(name):
+
+    #get id of competition
+    rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name LIKE ?", name)
+    comp_id = rows[0]["id"]
+    # get division info
+    divisions = []
+    rows = db.execute("SELECT DISTINCT name FROM divisions WHERE comp_id = ?", comp_id)
+    for i in range(len(rows)):
+        division = rows[i]["name"]
+        divisions.append(division)
+    # render template
+    return render_template("divisions.html", divisions=divisions)
+
 
 # login
 @app.route("/login", methods=["GET", "POST"])
