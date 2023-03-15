@@ -32,7 +32,7 @@ def after_request(response):
     return response
 
 
-#TO DO INDEX
+# index
 @app.route("/")
 @login_required
 def index():
@@ -43,12 +43,19 @@ def index():
     username = rows[0]["username"]
     firstname = rows[0]["firstname"]
     lastname = rows[0]["lastname"]
-
+    
+    # select user's competitions to display
+    competitions = []
+    rows = db.execute("SELECT * FROM competitions WHERE organizer_id = ?", session["user_id"])
+    for i in range(len(rows)):
+        competition = rows[i]["name"]
+        competitions.append(competition)
+       
     # render template
-    return render_template("index.html", username=username, firstname=firstname, lastname=lastname)
+    return render_template("index.html", username=username, firstname=firstname, lastname=lastname, competitions=competitions)
    
 
-# creat competition
+# create competition
 @app.route("/create", methods=["GET", "POST"])
 @login_required
 def create():
@@ -69,9 +76,13 @@ def create():
         
         # get format 
         format = request.form["formatselect"]
+        if format == 'singleround':
+            format = 'Single Round Elimination'
+        elif format == 'roundrobin':
+            format = 'Round Robin'
 
         # add new competition to competitions db
-        rows = db.execute("INSERT INTO competitions (name, format) VALUES (?,?)", compname, format)
+        rows = db.execute("INSERT INTO competitions (name, format, organizer_id) VALUES (?,?,?)", compname, format, session["user_id"] )
 
         # get comp_id for divisions db
         rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name = ?", compname)
@@ -94,19 +105,26 @@ def create():
         return render_template("create-comp.html")
 
 
-
-
 #TO DO MANAGE COMPETITON
 @app.route("/manage")
 @login_required
 def manage():
     return apology("Not finished", 400)
 
-#TO DO ENTER COMPETITON
-@app.route("/enter")
+# enter competition
+@app.route("/enter", methods=["GET", "POST"])
 @login_required
 def enter():
-    return apology("Not finished", 400)
+    
+    # if reached via GET
+    if request.method == "GET":
+        
+        # get info about competitions available to enter
+        competitions = db.execute("SELECT DISTINCT name, format FROM competitions")
+        # render template enter comp
+        return render_template("enter-comp.html", competitions=competitions)
+
+    # return render_template("enter-comp.html")
 
 # login
 @app.route("/login", methods=["GET", "POST"])

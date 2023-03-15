@@ -1,0 +1,1 @@
+[{'name': 'Max Musterman Comp', 'format': 'singleround'}, {'name': 'Max Muster Profis', 'format': 'singleround'}]

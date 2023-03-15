@@ -11,7 +11,9 @@ CREATE TABLE competitions (
     id INTEGER NOT NULL,
     name TEXT NOT NULL,
     format TEXT NOT NULL,
-    PRIMARY KEY(id)
+    organizer_id INTEGER NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(organizer_id) REFERENCES users(id)
 );
 
 CREATE TABLE competitors (

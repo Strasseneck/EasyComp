@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block main %}
-<h2>Profile</h2>
+<h2>User Profile</h2>
 <table>
     <thead>
         <tr>
@@ -16,6 +16,19 @@
             <td>{{ firstname | capitalize }}</td>
             <td>{{ lastname | capitalize }}</td>
         </tr>
+    </tbody>
+</table>
+<table>
+    <h2>Competitions as Organizer</h2>
+    <thead>
+        <tr>
+            <th>Competition</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for competition in competitions %}
+        <td>{{ competition }}</td>
+        {% endfor %}
     </tbody>
 </table>
 {% endblock %}
