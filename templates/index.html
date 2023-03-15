@@ -19,7 +19,7 @@
     </tbody>
 </table>
 <table>
-    <h2>Competitions as Organizer</h2>
+    <h2>Competitions Organized</h2>
     <thead>
         <tr>
             <th>Competition</th>
@@ -29,6 +29,20 @@
         {% for competition in competitions %}
         <td>{{ competition }}</td>
         {% endfor %}
+    </tbody>
+</table>
+<table>
+    <h2>Competitions Entered</h2>
+    <thead>
+        <tr>
+            <th>Competition</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for competition in competitionsentered %} {% for division in divisions %}
+        <td>{{ competition }}</td>
+        <td>{{ division }}</td>
+        {% endfor %} {% endfor %}
     </tbody>
 </table>
 {% endblock %}

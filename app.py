@@ -39,20 +39,35 @@ def index():
 
     # select user data
     rows = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
+    
     # get user data to display
     username = rows[0]["username"]
     firstname = rows[0]["firstname"]
     lastname = rows[0]["lastname"]
     
-    # select user's competitions to display
+    # select user's created competitions to display
     competitions = []
     rows = db.execute("SELECT * FROM competitions WHERE organizer_id = ?", session["user_id"])
     for i in range(len(rows)):
         competition = rows[i]["name"]
         competitions.append(competition)
        
+    # select competitions user has entered to display
+    competitionsentered = []
+    rows = db.execute("SELECT DISTINCT name FROM competitions INNER JOIN competitors ON competitors.competition_id = competitions.id WHERE competitor_id = ?", session["user_id"])
+    for i in range(len(rows)):
+        competition = rows[i]["name"]
+        competitionsentered.append(competition)
+
+    # select divisions user has entered to display
+    divisions = []
+    rows = db.execute("SELECT DISTINCT name FROM divisions INNER JOIN competitors ON competitors.division_id = divisions.id WHERE competitor_id = ?", session["user_id"])
+    for i in range(len(rows)):
+        division = rows[i]["name"]
+        divisions.append(division)
+    
     # render template
-    return render_template("index.html", username=username, firstname=firstname, lastname=lastname, competitions=competitions)
+    return render_template("index.html", username=username, firstname=firstname, lastname=lastname, competitions=competitions, competitionsentered=competitionsentered, divisions=divisions)
    
 
 # create competition
@@ -90,6 +105,7 @@ def create():
 
          # get belt classes
         beltclasses = request.form.getlist("beltdivision")
+        
         # get weight classes
         weightclasses = request.form.getlist("weightclass")
 
@@ -118,25 +134,48 @@ def enter():
 
     # get info about competitions available to enter
     competitions = db.execute("SELECT DISTINCT name, format FROM competitions")
+    
     # render template enter comp
     return render_template("enter-comp.html", competitions=competitions)
 
-@app.route("/divisions/<name>", methods=["GET", "POST"])
+@app.route("/divisions/<name>", methods=["GET"])
 @login_required
 def divisions(name):
 
     #get id of competition
     rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name LIKE ?", name)
     comp_id = rows[0]["id"]
+    
     # get division info
     divisions = []
     rows = db.execute("SELECT DISTINCT name FROM divisions WHERE comp_id = ?", comp_id)
     for i in range(len(rows)):
         division = rows[i]["name"]
+        division = division.replace("-"," ")
         divisions.append(division)
+    
     # render template
     return render_template("divisions.html", divisions=divisions)
 
+@app.route("/divisions/enterdivision/<name>", methods=["GET"])
+@login_required
+def enterdivision(name):
+
+    # get id for competitor
+    rows = db.execute("SELECT DISTINCT id FROM users WHERE id = ?", session["user_id"])
+    competitor_id = rows[0]["id"]
+    
+    # add back in - character to name
+    name = name.replace(" ", "-")
+    # get division id
+    rows = db.execute("SELECT DISTINCT id, comp_id FROM divisions WHERE name LIKE ?", name)
+    id = rows[0]["id"]
+    comp_id = rows[0]["comp_id"]
+
+    # insert user into competitor table
+    rows = db.execute("INSERT INTO competitors (competitor_id, competition_id, division_id) VALUES (?,?,?)",
+                    competitor_id, comp_id, id)
+    return redirect("/")
 
 # login
 @app.route("/login", methods=["GET", "POST"])
