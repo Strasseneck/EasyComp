@@ -11,61 +11,62 @@
             <input autocomplete="off" id="compname" name="compname" placeholder="Competition Name" type="text">      
         </div>
         <label>Competition Format</label>
-        <label class="form-check-label" for="formatselect">Single Round Elimination</label>
-        <input class="form-check-input" type="radio" value="singleround" id="formatselect" name="formatselect" checked="checked">
-        <label class="form-check-label" for="formatselect">Round Robin</label>
-        <input class="form-check" type="radio" value="roundrobin" id="formatselect" name="formatselect">
-       
+        <div class="input-group mb-3">
+            <label class="form-check-label" for="formatselect">Single Round Elimination</label>
+            <input class="form-check-input" type="radio" value="singleround" id="formatselect" name="formatselect" checked="checked">
+            <label class="form-check-label" for="formatselect">Round Robin</label>
+            <input class="form-check" type="radio" value="roundrobin" id="formatselect" name="formatselect">
+        </div>
+        <div class="input-group mb-3">
+            <label for="beltdivisions" class="form-label">Belt Divisions</label>
+            <input class="form-check-input" type="checkbox" value="White-" id="beltdivision" name="beltdivision">
+            <label class="form-check-label" for="white">Whitebelt</label>
 
-        <label for="beltdivisions" class="form-label">Belt Divisions</label>
-        <input class="form-check-input" type="checkbox" value="White-" id="beltdivision" name="beltdivision">
-        <label class="form-check-label" for="white">Whitebelt</label>
+            <input class="form-check-input" type="checkbox" value="Blue-" id="beltdivision" name="beltdivision">
+            <label class="form-check-label" for="blue">Bluebelt</label>
 
-        <input class="form-check-input" type="checkbox" value="Blue-" id="beltdivision" name="beltdivision">
-        <label class="form-check-label" for="blue">Bluebelt</label>
+            <input class="form-check-input" type="checkbox" value="Purple-" id="beltdivision" name="beltdivision">
+            <label class="form-check-label" for="purple">Purplebelt</label>
 
-        <input class="form-check-input" type="checkbox" value="Purple-" id="beltdivision" name="beltdivision">
-        <label class="form-check-label" for="purple">Purplebelt</label>
+            <input class="form-check-input" type="checkbox" value="Brown-" id="beltdivision" name="beltdivision">
+            <label class="form-check-label" for="brown">Brownbelt</label>
 
-        <input class="form-check-input" type="checkbox" value="Brown-" id="beltdivision" name="beltdivision">
-        <label class="form-check-label" for="brown">Brownbelt</label>
-
-        <input class="form-check-input" type="checkbox" value="Black-" id="beltdivision" name="beltdivision">
-        <label class="form-check-label" for="black">Blackbelt</label>
-        
+            <input class="form-check-input" type="checkbox" value="Black-" id="beltdivision" name="beltdivision">
+            <label class="form-check-label" for="black">Blackbelt</label>
+        </div>
+        <div class="input-group mb-3">
         <label for="weightclassesmen" class="form-label">Male Weightclasses</label>
-    
 
-        <input class="form-check-input" type="checkbox" value="Rooster-57.5kg" id="weightclass" name="weightclass">
-        <label class="form-check-label" for="rooster">Roosterweight 57.5kg</label>
+            <input class="form-check-input" type="checkbox" value="Rooster-57.5kg" id="weightclass" name="weightclass">
+            <label class="form-check-label" for="rooster">Roosterweight 57.5kg</label>
 
-        <input class="form-check-input" type="checkbox" value="Superfeather-65kg" id="weightclass" name="weightclass">
-        <label class="form-check-label" for="superfeather">Superfeatherweight 64kg</label>
+            <input class="form-check-input" type="checkbox" value="Superfeather-65kg" id="weightclass" name="weightclass">
+            <label class="form-check-label" for="superfeather">Superfeatherweight 64kg</label>
 
-        <input class="form-check-input" type="checkbox" value="Feather-70kg" id="weightclass" name="weightclass">
-        <label class="form-check-label" for="feather">Featherweight 70kg</label>
+            <input class="form-check-input" type="checkbox" value="Feather-70kg" id="weightclass" name="weightclass">
+            <label class="form-check-label" for="feather">Featherweight 70kg</label>
 
-        <input class="form-check-input" type="checkbox" value="Light-76kg" id="weightclass" name="weightclass">
-        <label class="form-check-label" for="light">Lightweight 76kg</label>
+            <input class="form-check-input" type="checkbox" value="Light-76kg" id="weightclass" name="weightclass">
+            <label class="form-check-label" for="light">Lightweight 76kg</label>
 
-        <input class="form-check-input" type="checkbox" value="Middle-82.3kg" id="weightclass" name="weightclass">
-        <label class="form-check-label" for="middle">Middleweight 82.3kg</label>
+            <input class="form-check-input" type="checkbox" value="Middle-82.3kg" id="weightclass" name="weightclass">
+            <label class="form-check-label" for="middle">Middleweight 82.3kg</label>
 
-        <input class="form-check-input" type="checkbox" value="Mediumheavy-88.3kg" id="weightclass" name="weightclass">
-        <label class="form-check-label" for="mediumheavy">Medium Heavy 88.3kg</label>
+            <input class="form-check-input" type="checkbox" value="Mediumheavy-88.3kg" id="weightclass" name="weightclass">
+            <label class="form-check-label" for="mediumheavy">Medium Heavy 88.3kg</label>
 
-        <input class="form-check-input" type="checkbox" value="Heavy-94.3kg" id="weightclass" name="weightclass">
-        <label class="form-check-label" for="heavy">Heavy 94.3kg</label>
+            <input class="form-check-input" type="checkbox" value="Heavy-94.3kg" id="weightclass" name="weightclass">
+            <label class="form-check-label" for="heavy">Heavy 94.3kg</label>
 
-        <input class="form-check-input" type="checkbox" value="Superheavy-100.5kg" id="weightclass" name="weightclass">
-        <label class="form-check-label" for="superheavy">Superheavy 100.5kg</label>
+            <input class="form-check-input" type="checkbox" value="Superheavy-100.5kg" id="weightclass" name="weightclass">
+            <label class="form-check-label" for="superheavy">Superheavy 100.5kg</label>
 
-        <input class="form-check-input" type="checkbox" value="Ultraheavy-nolimit" id="weightclass" name="weightclass">
-        <label class="form-check-label" for="ultraheavy">Ultra Heavy (No-limit)</label>
+            <input class="form-check-input" type="checkbox" value="Ultraheavy-nolimit" id="weightclass" name="weightclass">
+            <label class="form-check-label" for="ultraheavy">Ultra Heavy (No-limit)</label>
 
-        <input class="form-check-input" type="checkbox" value="Open" id="weightclass" name="weightclass">
-        <label class="form-check-label" for="open">Open Class</label>       
-        
+            <input class="form-check-input" type="checkbox" value="Open" id="weightclass" name="weightclass">
+            <label class="form-check-label" for="open">Open Class</label>       
+        </div>
         <button class="btn btn-primary" type="submit">Create Competition</button>
     </form>
 {% endblock %}

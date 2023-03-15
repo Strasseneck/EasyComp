@@ -1,1 +1,31 @@
 [{'name': 'Max Musterman Comp', 'format': 'singleround'}, {'name': 'Max Muster Profis', 'format': 'singleround'}]
+
+
+   # select competitions user has entered to display
+    competitionsentered = []
+    rows = db.execute("SELECT DISTINCT name FROM competitions INNER JOIN competitors ON competitors.competition_id = competitions.id WHERE competitor_id = ?", session["user_id"])
+    for i in range(len(rows)):
+        competition = rows[i]["name"]
+        competitionsentered.append(competition)
+
+    # select divisions user has entered to display
+    divisions = []
+    rows = db.execute("SELECT DISTINCT name FROM divisions INNER JOIN competitors ON competitors.division_id = divisions.id WHERE competitor_id = ?", session["user_id"])
+    for i in range(len(rows)):
+        division = rows[i]["name"]
+        division = division.replace("-"," ")
+        divisions.append(division)
+
+    # create dict item
+    results = {}
+    for competition in competitions:
+        for division in divisions:
+            results[competition] = division
+    print(results)
+
+SELECT 
+    competitions.name AS compname
+    divisions.name AS divname
+    FROM 
+    competitions
+    LEFT JOIN 

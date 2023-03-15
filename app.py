@@ -133,9 +133,10 @@ def enter():
 @login_required
 def divisions(name):
 
-    #get id of competition
-    rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name LIKE ?", name)
+    #get id and name of competition
+    rows = db.execute("SELECT DISTINCT id, name FROM competitions WHERE name LIKE ?", name)
     comp_id = rows[0]["id"]
+    compname = rows[0]["name"]
     
     # get division info
     divisions = []
@@ -146,23 +147,29 @@ def divisions(name):
         divisions.append(division)
     
     # render template
-    return render_template("divisions.html", divisions=divisions)
+    return render_template("divisions.html", divisions=divisions, compname=compname)
 
 @app.route("/divisions/enterdivision/<name>", methods=["GET"])
 @login_required
 def enterdivision(name):
 
+    names = name.split(":")
+    comp_name = names[0]
+    division = names[1]
+    
     # get id for competitor
     rows = db.execute("SELECT DISTINCT id FROM users WHERE id = ?", session["user_id"])
     competitor_id = rows[0]["id"]
     
     # get division id
-    rows = db.execute("SELECT DISTINCT id, comp_id FROM divisions WHERE name = ?", name)
+    rows = db.execute("SELECT DISTINCT id, comp_id, comp_name FROM divisions WHERE name = ? AND comp_name = ?", division, comp_name)
     id = rows[0]["id"]
 
     # get comp id 
     comp_id = rows[0]["comp_id"]
     print(comp_id)
+    comp_name = rows[0]["comp_name"]
+    print(comp_name)
 
     # insert user into competitor table
     rows = db.execute("INSERT INTO competitors (competitor_id, competition_id, division_id) VALUES (?,?,?)",

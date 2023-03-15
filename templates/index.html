@@ -38,13 +38,11 @@
         <th>Division</th>
     </thead>
     <tbody>
-        {% for entry in entered %} 
-       
+        {% for entry in entered %}   
         <tr>
             <td>{{ entry["comp_name"]}}</td>
             <td>{{ entry["name"]}}</td>
-         </tr>
-       
+         </tr>  
         {% endfor %}
     </tbody>
 </table>
