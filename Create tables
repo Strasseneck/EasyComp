@@ -9,7 +9,7 @@ CREATE TABLE users (
 
 CREATE TABLE competitions (
     id INTEGER NOT NULL,
-    name TEXT NOT NULL,
+    name TEXT NOT NULL UNIQUE,
     format TEXT NOT NULL,
     organizer_id INTEGER NOT NULL,
     PRIMARY KEY(id),
@@ -29,8 +29,10 @@ CREATE TABLE divisions (
     id INTEGER NOT NULL,
     name TEXT NOT NULL,
     comp_id INTEGER NOT NULL,
+    comp_name TEXT NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(comp_id) REFERENCES competitions(id)
+    FOREIGN KEY(comp_name) REFERENCES competitions(name)
 );
 
 

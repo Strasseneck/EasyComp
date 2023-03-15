@@ -51,23 +51,13 @@ def index():
     for i in range(len(rows)):
         competition = rows[i]["name"]
         competitions.append(competition)
-       
-    # select competitions user has entered to display
-    competitionsentered = []
-    rows = db.execute("SELECT DISTINCT name FROM competitions INNER JOIN competitors ON competitors.competition_id = competitions.id WHERE competitor_id = ?", session["user_id"])
-    for i in range(len(rows)):
-        competition = rows[i]["name"]
-        competitionsentered.append(competition)
 
-    # select divisions user has entered to display
-    divisions = []
-    rows = db.execute("SELECT DISTINCT name FROM divisions INNER JOIN competitors ON competitors.division_id = divisions.id WHERE competitor_id = ?", session["user_id"])
-    for i in range(len(rows)):
-        division = rows[i]["name"]
-        divisions.append(division)
-    
+    # select user's entered comps and divisions
+    rows = db.execute("SELECT DISTINCT comp_name, name FROM divisions INNER JOIN competitors on competitors.division_id = divisions.id WHERE competitor_id = ?", session["user_id"])
+    entered = rows
+
     # render template
-    return render_template("index.html", username=username, firstname=firstname, lastname=lastname, competitions=competitions, competitionsentered=competitionsentered, divisions=divisions)
+    return render_template("index.html", username=username, firstname=firstname, lastname=lastname, competitions=competitions, entered=entered)
    
 
 # create competition
@@ -113,7 +103,8 @@ def create():
         for i in range(len(beltclasses)):
             for j in range(len(weightclasses)):
                 division = beltclasses[i] + weightclasses[j]
-                rows = db.execute("INSERT INTO divisions (name, comp_id) VALUES (?,?)", division, comp_id)
+                division = division.replace("-"," ")
+                rows = db.execute("INSERT INTO divisions (name, comp_id, comp_name) VALUES (?,?,?)", division, comp_id, compname)
         
         return redirect("/")
      # if reached by get
@@ -165,12 +156,13 @@ def enterdivision(name):
     rows = db.execute("SELECT DISTINCT id FROM users WHERE id = ?", session["user_id"])
     competitor_id = rows[0]["id"]
     
-    # add back in - character to name
-    name = name.replace(" ", "-")
     # get division id
-    rows = db.execute("SELECT DISTINCT id, comp_id FROM divisions WHERE name LIKE ?", name)
+    rows = db.execute("SELECT DISTINCT id, comp_id FROM divisions WHERE name = ?", name)
     id = rows[0]["id"]
+
+    # get comp id 
     comp_id = rows[0]["comp_id"]
+    print(comp_id)
 
     # insert user into competitor table
     rows = db.execute("INSERT INTO competitors (competitor_id, competition_id, division_id) VALUES (?,?,?)",
