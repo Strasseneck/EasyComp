@@ -1,31 +1,40 @@
-[{'name': 'Max Musterman Comp', 'format': 'singleround'}, {'name': 'Max Muster Profis', 'format': 'singleround'}]
+# view registrations for competition
+@app.route("/registrations/<competition>", methods=["GET"])
+@login_required
+def registrations(competition):
 
-
-   # select competitions user has entered to display
-    competitionsentered = []
-    rows = db.execute("SELECT DISTINCT name FROM competitions INNER JOIN competitors ON competitors.competition_id = competitions.id WHERE competitor_id = ?", session["user_id"])
+    #get id and name of competition
+    rows = db.execute("SELECT DISTINCT id, name FROM competitions WHERE name LIKE ?", competition)
+    comp_id = rows[0]["id"]
+    compname = rows[0]["name"]
+    
+    registrations = []
+    divisions = {}
+    divnames = []
+    divids = []
+    # get division name and id
+    rows = db.execute("SELECT DISTINCT id, name FROM divisions INNER JOIN competitors on competitors.division_id = divisions.id WHERE competition_id = ?", comp_id)
     for i in range(len(rows)):
-        competition = rows[i]["name"]
-        competitionsentered.append(competition)
+        divname = rows[i]["name"]
+        divnames.append(divname)
+        divid = rows[i]["id"] 
+        divids.append(divid)
 
-    # select divisions user has entered to display
-    divisions = []
-    rows = db.execute("SELECT DISTINCT name FROM divisions INNER JOIN competitors ON competitors.division_id = divisions.id WHERE competitor_id = ?", session["user_id"])
-    for i in range(len(rows)):
-        division = rows[i]["name"]
-        division = division.replace("-"," ")
-        divisions.append(division)
-
-    # create dict item
-    results = {}
-    for competition in competitions:
-        for division in divisions:
-            results[competition] = division
-    print(results)
-
-SELECT 
-    competitions.name AS compname
-    divisions.name AS divname
-    FROM 
-    competitions
-    LEFT JOIN 
+    # get competitors names for each division
+    for i in range(len(divids)):
+        competitors = []
+        divid = divids[i] 
+        divname = divnames[i]
+        rows = db.execute("SELECT DISTINCT firstname, lastname FROM users INNER JOIN competitors on competitors.competitor_id = users.id WHERE division_id = ?", divid)
+        for j in range(len(rows)):
+            competitor = (rows[j]["firstname"] + " " + rows[j]["lastname"])
+            competitors.append(competitor)
+        # add values to divisions dict        
+        divisions["division"] = divname
+        divisions["competitors"] = competitors
+        # append registrations list with the divisions dictionary
+        registrations.append(divisions)
+   
+        
+    print(registrations)
+    return render_template("view-comp-registrations.html", divnames=divnames, compname=compname, registrations=registrations
