@@ -1,19 +1,22 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    View Registrations
+    Manage Competitions
 {% endblock %}
 
 {% block main %}
-<h1>{{ compname | capitalize }}</h1>
+<h2>Your Competitions</h2>
+{% for dict_item in competitions %}
+    <h3>Name: {{ dict_item['name'] }}</h3>
+    <h3>Format: {{ dict_item['format'] }} </h3>
+{% endfor %}
 {% for division in divisions %}
 <table class="table table-dark table-striped">
     <thead>
         <tr>
             <th>{{ division }}</th>
         </tr>
-    </thead>
-   
+    </thead> 
     <tbody>
         {% set list1 = divisions[division] %}
         {% for elem in list1 %}
@@ -22,7 +25,6 @@
         </tr>
         {% endfor %}    
     </tbody>
-
 </table>
 {% endfor %}
 {% endblock %}

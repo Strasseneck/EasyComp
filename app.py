@@ -111,12 +111,6 @@ def create():
     else:
         return render_template("create-comp.html")
 
-#TO DO MANAGE COMPETITON
-@app.route("/manage")
-@login_required
-def manage():
-    return apology("Not finished", 400)
-
 # view competition
 @app.route("/view", methods=["GET"])
 @login_required
@@ -162,6 +156,44 @@ def registrations(competition):
         divisions[divname] = competitors
     
     return render_template("view-comp-registrations.html", compname=compname, divisions=divisions, divnames=divnames)
+
+# manage competition
+@app.route("/manage", methods = ["GET"])
+@login_required
+def manage():
+
+
+    divisions = {}
+    divnames = []
+    divids = []
+    # select competitons created by user
+    competitions = db.execute("SELECT DISTINCT name, format FROM competitions WHERE organizer_id = ?", session["user_id"])
+
+    comprows = db.execute("SELECT DISTINCT id FROM competitions WHERE organizer_id = ?", session["user_id"])
+    for i in range(len(comprows)):
+        compid = comprows[0]["id"]
+        # get division name and id
+        rows = db.execute("SELECT DISTINCT id, name FROM divisions INNER JOIN competitors on competitors.division_id = divisions.id WHERE competition_id = ?", compid)
+        for i in range(len(rows)):
+            divname = rows[i]["name"]
+            divnames.append(divname)
+            divid = rows[i]["id"] 
+            divids.append(divid)
+
+    # get competitors names for each division
+    for i in range(len(divids)):
+        competitors = []
+        divid = divids[i] 
+        divname = divnames[i]
+        rows = db.execute("SELECT DISTINCT firstname, lastname FROM users INNER JOIN competitors on competitors.competitor_id = users.id WHERE division_id = ?", divid)
+        for j in range(len(rows)):
+            competitor = (rows[j]["firstname"] + " " + rows[j]["lastname"])
+            competitors.append(competitor)
+        # add values to divisions dict        
+        divisions[divname] = competitors
+
+    #render template
+    return render_template("manage-comp.html", divisions=divisions, competitions=competitions)
 
 #TO DO START COMPETITION
 @app.route("/start")

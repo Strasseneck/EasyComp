@@ -9,3 +9,7 @@ password = jbloggspass
 Max Musterman
 maxmusterman
 password = musterpass
+
+sven svensson
+svensven
+svenpass
