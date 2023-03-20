@@ -1,4 +1,5 @@
 import os
+import math
 import requests
 import urllib.parse
 
@@ -32,3 +33,7 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
+
+def nextpowerof2(n):
+    return 1 if n == 0 else 2**(n - 1).bit_length()
+

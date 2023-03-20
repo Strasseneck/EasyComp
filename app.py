@@ -6,11 +6,13 @@ from cs50 import SQL
 import datetime
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
+import math
 from tempfile import mkdtemp
+import random
 from werkzeug.security import check_password_hash, generate_password_hash
 
 # import helper files
-from helpers import apology, login_required
+from helpers import apology, login_required, nextpowerof2
 
 # configure application
 app = Flask(__name__)
@@ -161,8 +163,6 @@ def registrations(competition):
 @app.route("/manage", methods = ["GET"])
 @login_required
 def manage():
-
-
     divisions = {}
     divnames = []
     divids = []
@@ -195,18 +195,72 @@ def manage():
     #render template
     return render_template("manage-comp.html", divisions=divisions, competitions=competitions)
 
-#TO DO START COMPETITION
-@app.route("/start")
+# start  competition
+@app.route("/start/<competition>", methods=["GET", "POST"])
 @login_required
-def start():
-    return apology("not done yet")
+def start(competition):
     #generate participants list
 
-    #assign random numbers
+    #get id and name of competition
+    rows = db.execute("SELECT DISTINCT id, name FROM competitions WHERE name LIKE ?", competition)
+    comp_id = rows[0]["id"]
+    
+    divisions = {}
+    divnames = []
+    divids = []
+    # get division name and id
+    rows = db.execute("SELECT DISTINCT id, name FROM divisions INNER JOIN competitors on competitors.division_id = divisions.id WHERE competition_id = ?", comp_id)
+    for i in range(len(rows)):
+        divname = rows[i]["name"]
+        divnames.append(divname)
+        divid = rows[i]["id"] 
+        divids.append(divid)
 
-    #calculate rounds
+    # get competitors names for each division
+    for i in range(len(divids)):
+        competitors = []
+        divid = divids[i] 
+        divname = divnames[i]
+        rows = db.execute("SELECT DISTINCT firstname, lastname FROM users INNER JOIN competitors on competitors.competitor_id = users.id WHERE division_id = ?", divid)
+        for j in range(len(rows)):
+            competitor = (rows[j]["firstname"] + " " + rows[j]["lastname"])
+            competitors.append(competitor)
+        # add values to divisions dict        
+        divisions[divname] = competitors
 
-    #schedule first round
+
+    # master loop for each division
+    for i in range(len(divisions)):
+        participants = []
+        # get number of participants for each division
+        divname = divnames[i]
+        participants = divisions[divname]
+        totalmatches = len(participants)
+        # find nearest power of 2 to determine byes
+        powerof2 = nextpowerof2(totalmatches)
+        byes = powerof2 - totalmatches
+        matchesrd = int((totalmatches - byes) / 2)
+        # schedule matches first round
+        for i in range(matchesrd):
+            competitor1 = random.choice(participants)
+            participants.remove(competitor1)
+            competitor2 = random.choice(participants)
+            participants.remove(competitor2)
+           # get competitor ids for matches table
+            lastname1 = competitor1.split()
+            lastname1 = lastname1[1]
+            lastname2 = competitor2.split()
+            lastname2 = lastname2[1]
+            rows = db.execute("SELECT DISTINCT id FROM users WHERE lastname = ? OR lastname = ?", lastname1, lastname2)
+            id1 = rows[0]["id"]
+            id2 = rows[1]["id"]
+            # get div_id
+            rows = db.execute("SELECT DISTINCT id FROM divisions WHERE name = ? AND comp_id = ?", divname, comp_id)
+            div_id = rows[0]["id"]
+            # insert match into matches table
+            db.execute("INSERT INTO matches (comp_id, div_id, competitor1_id, competitor2_id) VALUES (?,?,?,?)", comp_id, div_id, id1, id2) 
+            matches = ("SELECT * FROM matches WHERE comp_id = ?", comp_id)
+        return render_template("brackets.html", matches=matches)
 
     #out put matches pages
 

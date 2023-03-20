@@ -7,8 +7,12 @@
 {% block main %}
 <h2>Your Competitions</h2>
 {% for dict_item in competitions %}
-    <h3>Name: {{ dict_item['name'] }}</h3>
+{% set competition = dict_item['name'] %}
+    <h3>Name: {{ competition }}</h3>
     <h3>Format: {{ dict_item['format'] }} </h3>
+<form action="/start/{{ competition }}" method="post">
+    <button type="submit" class="btn btn-primary">Start Competition</button>
+</form>
 {% endfor %}
 {% for division in divisions %}
 <table class="table table-dark table-striped">

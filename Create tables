@@ -31,8 +31,21 @@ CREATE TABLE divisions (
     comp_id INTEGER NOT NULL,
     comp_name TEXT NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY(comp_id) REFERENCES competitions(id)
+    FOREIGN KEY(comp_id) REFERENCES competitions(id),
     FOREIGN KEY(comp_name) REFERENCES competitions(name)
 );
 
-
+CREATE TABLE matches (
+    id INTEGER NOT NULL,
+    comp_id INTEGER NOT NULL,
+    div_id INTEGER NOT NULL,
+    competitor1_id INTEGER NOT NULL,
+    competitor2_id INTEGER NOT NULL,
+    winner INTEGER,
+    method TEXT,
+    PRIMARY KEY(id)
+    FOREIGN KEY(comp_id) REFERENCES competitions(id),
+    FOREIGN KEY(div_id) REFERENCES divisions(id),
+    FOREIGN KEY(competitor1_id) REFERENCES users(id),
+    FOREIGN KEY(competitor2_id) REFERENCES users(id)
+);
