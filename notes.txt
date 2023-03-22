@@ -41,3 +41,9 @@ def registrations(competition):
 
    {'Blue Rooster 57.5kg': [{'id': 1, 'competitor1_name': 'Max Musterman', 'competitor2_name': 'Joe Bloggs'}, {'id': 2, 'competitor1_name': 'Sven Svensson', 'competitor2_name': 'John Smith'}], 
    'Blue Superfeather 65kg': [{'id': 3, 'competitor1_name': 'John Smith', 'competitor2_name': 'Joe Bloggs'}]}
+
+   [
+    {'id': 1, 'div_name': 'Blue Rooster 57.5kg', 'competitor1_name': 'John Smith', 'competitor2_name': 'Joe Bloggs'},
+    {'id': 2, 'div_name': 'Blue Rooster 57.5kg', 'competitor1_name': 'Max Musterman', 'competitor2_name': 'Sven Svensson'},
+    {'id': 3, 'div_name': 'Blue Superfeather 65kg', 'competitor1_name': 'John Smith', 'competitor2_name': 'Joe Bloggs'}
+    ]

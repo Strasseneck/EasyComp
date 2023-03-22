@@ -157,7 +157,12 @@ def registrations(competition):
         # add values to divisions dict        
         divisions[divname] = competitors
     
-    return render_template("view-comp-registrations.html", compname=compname, divisions=divisions, divnames=divnames)
+    # check if brackets available
+    matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
+    if len(matches) > 0:
+        return render_template("view-comp-registrations.html", compname=compname, divisions=divisions, divnames=divnames, matches=matches)
+    else:
+        return render_template("view-comp-registrations.html", compname=compname, divisions=divisions, divnames=divnames)
 
 # manage competition
 @app.route("/manage", methods = ["GET"])
@@ -179,7 +184,7 @@ def manage():
             divnames.append(divname)
             divid = rows[i]["id"] 
             divids.append(divid)
-
+    
     # get competitors names for each division
     for i in range(len(divids)):
         competitors = []
@@ -199,15 +204,20 @@ def manage():
 @app.route("/start/<competition>", methods=["GET", "POST"])
 @login_required
 def start(competition):
-    compname = competition
+    compname = competition  
     #generate participants list
     #get id and name of competition
     rows = db.execute("SELECT DISTINCT id, name FROM competitions WHERE name LIKE ?", competition)
     comp_id = rows[0]["id"]
-    
     divisions = {}
     divnames = []
     divids = []
+
+    # check if brackets have already been generated
+    matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
+    if len(rows) > 0:
+        return render_template("brackets.html", matches=matches, compname=compname)
+    
     # get division name and id
     rows = db.execute("SELECT DISTINCT id, name FROM divisions INNER JOIN competitors on competitors.division_id = divisions.id WHERE competition_id = ?", comp_id)
     for i in range(len(rows)):
@@ -268,7 +278,13 @@ def start(competition):
 @app.route("/match/<id>", methods=["POST"])
 @login_required
 def match(id):
-    return 'to do'
+    # get match info
+    rows = db.execute("SELECT DISTINCT competitor1_name, competitor2_name FROM matches WHERE id = ?", id)
+    match = rows[0]
+
+    return render_template("match.html", match=match)
+
+    
 
 # enter competition
 @app.route("/enter", methods=["GET"])
