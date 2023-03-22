@@ -38,3 +38,6 @@ def registrations(competition):
         
     print(registrations)
     return render_template("view-comp-registrations.html", divnames=divnames, compname=compname, registrations=registrations
+
+   {'Blue Rooster 57.5kg': [{'id': 1, 'competitor1_name': 'Max Musterman', 'competitor2_name': 'Joe Bloggs'}, {'id': 2, 'competitor1_name': 'Sven Svensson', 'competitor2_name': 'John Smith'}], 
+   'Blue Superfeather 65kg': [{'id': 3, 'competitor1_name': 'John Smith', 'competitor2_name': 'Joe Bloggs'}]}

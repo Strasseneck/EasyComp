@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block main %}
-{% for competition in competitions %}
+{%for competition in competitions %}
 <div class="card" style="width: 18rem;" name="competitioncard">
-    <div class="card-body">
-      <h5 class="card-title">{{competition['name']}}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">{{ competition['format']}}</h6>
-      <p class="card-text"></p>
-      <a href="/registrations/{{competition['name']}}" class="card-link">Registrations</a>
-    </div>
+  <div class="card-body">
+    <h5 class="card-title">{{competition['name']}}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{ competition['format']}}</h6>
+    <p class="card-text"></p>
+    <a href="/registrations/{{competition['name']}}" class="card-link">Registrations</a>
   </div>
-  {% endfor %}
+</div>
+{% endfor %}
 {% endblock %}

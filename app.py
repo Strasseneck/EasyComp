@@ -199,8 +199,8 @@ def manage():
 @app.route("/start/<competition>", methods=["GET", "POST"])
 @login_required
 def start(competition):
+    compname = competition
     #generate participants list
-
     #get id and name of competition
     rows = db.execute("SELECT DISTINCT id, name FROM competitions WHERE name LIKE ?", competition)
     comp_id = rows[0]["id"]
@@ -258,11 +258,17 @@ def start(competition):
             rows = db.execute("SELECT DISTINCT id FROM divisions WHERE name = ? AND comp_id = ?", divname, comp_id)
             div_id = rows[0]["id"]
             # insert match into matches table
-            db.execute("INSERT INTO matches (comp_id, div_id, competitor1_id, competitor2_id) VALUES (?,?,?,?)", comp_id, div_id, id1, id2) 
-            matches = ("SELECT * FROM matches WHERE comp_id = ?", comp_id)
-        return render_template("brackets.html", matches=matches)
+            db.execute("INSERT INTO matches (comp_id, div_id, div_name, competitor1_name, competitor2_name, competitor1_id, competitor2_id) VALUES (?,?,?,?,?,?,?)",
+                        comp_id, div_id, divname, competitor1, competitor2, id1, id2) 
 
-    #out put matches pages
+    matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
+    return render_template("brackets.html", matches=matches, compname=compname)
+
+# TO DO START MATCH
+@app.route("/match/<id>", methods=["POST"])
+@login_required
+def match(id):
+    return 'to do'
 
 # enter competition
 @app.route("/enter", methods=["GET"])
