@@ -42,19 +42,21 @@
                     <button onclick="pauseClock()" class="btn-pause">Pause</button>
                 </div>
                 <br>
-                <select id="victory-form" class="form-select" aria-label="victory">
-                    <option selected>Choose Winner</option>
-                    <option value ="1">{{match['competitor1_name']}}</option>                      
-                    <option value ="2">{{match['competitor2_name']}}</option>
-                </select>
-                <select id="victory-method" class="form-select">
-                    <option selected>Choose Victory Method</option>
-                    <option value ="submission">Submission</option>
-                    <option value ="point">Points</option>
-                    <option value ="decision">Decision</option>
-                    <option value ="dq">DQ</option>
-                </select>
-                <button class="btn" type="submit">Submit</button>
+                <form action="/endmatch/{{id}}" method="post" name="victory-form">
+                    <select id="winner-select"  name="winner-select" class="form-select" aria-label="winner-select">
+                        <option selected>Choose Winner</option>
+                        <option value ="1">{{match['competitor1_name']}}</option>                      
+                        <option value ="2">{{match['competitor2_name']}}</option>
+                    </select>
+                    <select id="victory-method" name="victory-method" class="form-select">
+                        <option selected>Choose Victory Method</option>
+                        <option value ="submission">Submission</option>
+                        <option value ="points">Points</option>
+                        <option value ="decision">Decision</option>
+                        <option value ="dq">DQ</option>
+                    </select>  
+                    <button class="btn" type="submit">Submit</button>
+                </form>
             </div>
                 <div id="comp2" class="container">
                     <h1>{{ match['competitor2_name'] }}</h1>
@@ -83,7 +85,8 @@
                 </div>
             </div>
         <script>
-            // clock buttons
+
+// clock buttons
 const btnStart = document.querySelector(".btn-start");
 const btnPause = document.querySelector(".btn-pause");
 
