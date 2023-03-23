@@ -214,10 +214,14 @@ def start(competition):
     divids = []
 
     # check if brackets have already been generated
-    matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
-    if len(rows) > 1:
-            matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
-            return render_template("brackets.html", matches=matches, compname=compname)
+    count = db.execute("SELECT COUNT(*) FROM matches")
+    count = count[0]["COUNT(*)"]
+    count = int(count)
+
+    if count != 0:
+        matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
+        return render_template("brackets.html", matches=matches, compname=compname)
+
     else:
         # get division name and id
         rows = db.execute("SELECT DISTINCT id, name FROM divisions INNER JOIN competitors on competitors.division_id = divisions.id WHERE competition_id = ?", comp_id)
@@ -274,7 +278,9 @@ def start(competition):
 
         matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
         return render_template("brackets.html", matches=matches, compname=compname)
+    
 
+       
 # start match
 @app.route("/match/<id>", methods=["POST"])
 @login_required
