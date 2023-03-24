@@ -1,4 +1,3 @@
-
 # import libraries etc
 import os
 
@@ -61,6 +60,7 @@ def index():
     # render template
     return render_template("index.html", username=username, firstname=firstname, lastname=lastname, competitions=competitions, entered=entered)
    
+
 # create competition
 @app.route("/create", methods=["GET", "POST"])
 @login_required
@@ -214,14 +214,13 @@ def start(competition):
     divids = []
 
     # check if brackets have already been generated
-    count = db.execute("SELECT COUNT(*) FROM matches WHERE comp_id = ?", comp_id)
+    count = db.execute("SELECT COUNT(*) FROM matches")
     count = count[0]["COUNT(*)"]
     count = int(count)
 
     if count != 0:
-        displaydivs = db.execute("SELECT DISTINCT div_id, div_name FROM matches WHERE comp_id = ?", comp_id)
-        print('first one')
-        return render_template("brackets.html", displaydivs=displaydivs, compname=compname)
+        matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
+        return render_template("brackets.html", matches=matches, compname=compname)
 
     else:
         # get division name and id
@@ -273,23 +272,11 @@ def start(competition):
                 # insert match into matches table
                 db.execute("INSERT INTO matches (comp_id, div_id, div_name, competitor1_name, competitor2_name) VALUES (?,?,?,?,?)",
                             comp_id, div_id, divname, competitor1, competitor2) 
-                
 
-        displaydivs = db.execute("SELECT DISTINCT div_id, div_name FROM matches WHERE comp_id = ?", comp_id)
-        return render_template("brackets.html", displaydivs=displaydivs, compname=compname)
+        matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
+        return render_template("brackets.html", matches=matches, compname=compname)
     
-# start division
-@app.route("/startdivision/<division>", methods=["POST"])
-@login_required
-def startdivision(division):
-    # get divname
-    rows = db.execute("SELECT DISTINCT name FROM divisions WHERE id = ?", division)
-    divname = rows[0]["name"]
-
-    # get brackets
-    matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE div_id = ?", division)
-    return render_template("startdivision.html", matches=matches, divname=divname)
-    
+     
 # start match
 @app.route("/match/<id>", methods=["POST"])
 @login_required
@@ -352,8 +339,6 @@ def nextround(division):
     for i in range(len(rows)):
         participant = rows[i]["winner"]
         participants.append(participant)
-    
-    #  get match rounds for calculating number of matches
     matchesrd = len(participants) / 2
     comp_id = rows[0]["comp_id"]
     divname = rows[0]["div_name"]
@@ -372,6 +357,11 @@ def nextround(division):
     matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
     return render_template("brackets.html", matches=matches, divname=divname)
 
+
+
+        
+
+    
 
 # enter competition
 @app.route("/enter", methods=["GET"])

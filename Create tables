@@ -42,13 +42,9 @@ CREATE TABLE matches (
     div_name TEXT NOT NULL,
     competitor1_name TEXT NOT NULL,
     competitor2_name TEXT NOT NULL,
-    competitor1_id INTEGER NOT NULL,
-    competitor2_id INTEGER NOT NULL,
     PRIMARY KEY(id)
     FOREIGN KEY(comp_id) REFERENCES competitions(id),
-    FOREIGN KEY(div_id) REFERENCES divisions(id),
-    FOREIGN KEY(competitor1_id) REFERENCES users(id),
-    FOREIGN KEY(competitor2_id) REFERENCES users(id)
+    FOREIGN KEY(div_id) REFERENCES divisions(id)
 );
 
 CREATE TABLE matchresults (
@@ -58,13 +54,9 @@ CREATE TABLE matchresults (
     div_name TEXT NOT NULL,
     competitor1_name TEXT NOT NULL,
     competitor2_name TEXT NOT NULL,
-    competitor1_id INTEGER NOT NULL,
-    competitor2_id INTEGER NOT NULL,
     winner TEXT NOT NULL,
     method TEXT NOT NULL,
     PRIMARY KEY(id)
     FOREIGN KEY(comp_id) REFERENCES competitions(id),
-    FOREIGN KEY(div_id) REFERENCES divisions(id),
-    FOREIGN KEY(competitor1_id) REFERENCES users(id),
-    FOREIGN KEY(competitor2_id) REFERENCES users(id)  
+    FOREIGN KEY(div_id) REFERENCES divisions(id)
 );
