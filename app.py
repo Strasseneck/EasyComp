@@ -270,9 +270,14 @@ def start(competition):
                 # get div_id
                 rows = db.execute("SELECT DISTINCT id FROM divisions WHERE name = ? AND comp_id = ?", divname, comp_id)
                 div_id = rows[0]["id"]
+
+                # get match_id make by making sure it's continuing from finished matches
+                rows = db.execute("SELECT DISTINCT id FROM matchresults")
+                n = len(rows)
+                match_id = n + 1
                 # insert match into matches table
-                db.execute("INSERT INTO matches (comp_id, div_id, div_name, competitor1_name, competitor2_name) VALUES (?,?,?,?,?)",
-                            comp_id, div_id, divname, competitor1, competitor2) 
+                db.execute("INSERT INTO matches (id, comp_id, div_id, div_name, competitor1_name, competitor2_name) VALUES (?,?,?,?,?,?)",
+                            match_id, comp_id, div_id, divname, competitor1, competitor2) 
                 
 
         displaydivs = db.execute("SELECT DISTINCT div_id, div_name FROM matches WHERE comp_id = ?", comp_id)
@@ -318,17 +323,30 @@ def endmatch(id):
    # update table
     if winner == "1":
         name = competitor1 
+        loser = competitor2
 
     elif winner == "2":
         name = competitor2
+        loser = competitor1
 
     method = request.form.get("victory-method")
 
     # add match to matchresults table
     db.execute("INSERT INTO matchresults (id, comp_id, div_id, div_name, competitor1_name, competitor2_name, winner, method) VALUES (?,?,?,?,?,?,?,?)",
                             id, comp_id, div_id, divname, competitor1, competitor2 , name, method) 
+    
     # remove match from matches
     db.execute("DELETE FROM matches WHERE id = ?", id)
+    
+    # get loser id by splitting name
+    losername = loser.split()
+    loserfirstname = losername[0]
+    loserlastname = losername[1]
+    rows = db.execute("SELECT DISTINCT id FROM users WHERE firstname = ? and lastname = ?", loserfirstname, loserlastname)
+    loserid = rows[0]["id"]
+
+    # remove losers from competitors
+    db.execute("DELETE FROM competitors WHERE competitor_id = ?", loserid)
 
     #get compname
     rows = db.execute("SELECT DISTINCT name FROM competitions WHERE id = ?", comp_id)
