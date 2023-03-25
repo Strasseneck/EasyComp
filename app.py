@@ -397,11 +397,16 @@ def endmatch(id):
         goldid = winnerid
         silver = loser
         silverid = loserid
+        
         # add results to final results table
         db.execute("INSERT INTO competition_results (comp_id, comp_name, div_id, div_name, gold, gold_id, silver, silver_id) VALUES (?,?,?,?,?,?,?,?)", comp_id, compname, div_id, divname, gold, goldid, silver, silverid)
+        
         # get results
         results = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name, winner, method FROM matchresults WHERE comp_id = ?", comp_id)
         medallists = db.execute("SELECT DISTINCT div_name, gold, silver FROM competition_results WHERE comp_id = ?", comp_id)
+
+        # delete winner from competitors
+        db.execute("DELETE FROM competitors WHERE competitor_id = ? AND division_id = ?", winnerid, div_id)
         return render_template("finalresults.html", medallists=medallists, divname=divname, results=results) 
     
     else:
