@@ -13,3 +13,11 @@ password = musterpass
 sven svensson
 svensven
 svenpass
+
+jean michel
+jmichel
+jpassword
+
+joe blow
+jblow
+jblowpass

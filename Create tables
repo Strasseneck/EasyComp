@@ -36,7 +36,7 @@ CREATE TABLE divisions (
 );
 
 CREATE TABLE matches (
-    id INTEGER NOT NULL,
+    id TEXT NOT NULL,
     comp_id INTEGER NOT NULL,
     div_id INTEGER NOT NULL,
     div_name TEXT NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE matches (
 );
 
 CREATE TABLE matchresults (
-    id INTEGER NOT NULL,
+    id TEXT NOT NULL,
     comp_id INTEGER NOT NULL,
     div_id INTEGER NOT NULL,
     div_name TEXT NOT NULL,
@@ -59,4 +59,19 @@ CREATE TABLE matchresults (
     PRIMARY KEY(id)
     FOREIGN KEY(comp_id) REFERENCES competitions(id),
     FOREIGN KEY(div_id) REFERENCES divisions(id)
+);
+
+CREATE TABLE competition_results (
+    comp_id INTEGER NOT NULL,
+    comp_name TEXT NOT NULL,
+    div_id INTEGER NOT NULL,
+    div_name TEXT NOT NULL,
+    gold TEXT NOT NULL,
+    gold_id INTEGER NOT NULL,
+    silver TEXT NOT NULL,
+    silver_id INTEGER NOT NULL,
+    FOREIGN KEY(comp_id) REFERENCES competitions(id)
+    FOREIGN KEY(div_id) REFERENCES divisions(id)
+    FOREIGN KEY(gold_id) REFERENCES users(id)
+    FOREIGN KEY(silver_id) REFERENCES users(id)
 );

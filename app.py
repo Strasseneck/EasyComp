@@ -7,8 +7,9 @@ import datetime
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 import math
-from tempfile import mkdtemp
 import random
+from tempfile import mkdtemp
+from uuid import uuid4
 from werkzeug.security import check_password_hash, generate_password_hash
 
 # import helper files
@@ -257,8 +258,11 @@ def start(competition):
             
             # find nearest power of 2 to determine byes
             powerof2 = nextpowerof2(totalmatches)
+            print(powerof2)
             byes = powerof2 - totalmatches
+            print(byes)
             matchesrd = int((totalmatches - byes) / 2)
+            print(matchesrd)
             
             # schedule matches first round
             for i in range(matchesrd):
@@ -271,10 +275,10 @@ def start(competition):
                 rows = db.execute("SELECT DISTINCT id FROM divisions WHERE name = ? AND comp_id = ?", divname, comp_id)
                 div_id = rows[0]["id"]
 
-                # get match_id make by making sure it's continuing from finished matches
-                rows = db.execute("SELECT DISTINCT id FROM matchresults")
-                n = len(rows)
-                match_id = n + 1
+                # generate unique match id 
+                match_id = str(uuid4())
+                print(match_id)
+
                 # insert match into matches table
                 db.execute("INSERT INTO matches (id, comp_id, div_id, div_name, competitor1_name, competitor2_name) VALUES (?,?,?,?,?,?)",
                             match_id, comp_id, div_id, divname, competitor1, competitor2) 
@@ -317,79 +321,77 @@ def endmatch(id):
     competitor2 = info[0]["competitor2_name"]
     comp_id = info[0]["comp_id"]
 
+    # get compname
+    rows = db.execute("SELECT DISTINCT name FROM competitions WHERE id = ?", comp_id)
+    compname = rows[0]["name"]
+
     # get winner
     winner = request.form.get("winner-select")
 
    # update table
     if winner == "1":
-        name = competitor1 
+        winner = competitor1 
         loser = competitor2
 
     elif winner == "2":
-        name = competitor2
+        winner = competitor2
         loser = competitor1
 
     method = request.form.get("victory-method")
 
     # add match to matchresults table
     db.execute("INSERT INTO matchresults (id, comp_id, div_id, div_name, competitor1_name, competitor2_name, winner, method) VALUES (?,?,?,?,?,?,?,?)",
-                            id, comp_id, div_id, divname, competitor1, competitor2 , name, method) 
+                            id, comp_id, div_id, divname, competitor1, competitor2 , winner, method) 
     
     # remove match from matches
     db.execute("DELETE FROM matches WHERE id = ?", id)
     
-    # get loser id by splitting name
+    # get winner and loser id by splitting name
+    winnername = winner.split()
+    winnerfirstname = winnername[0]
+    winnerlastname = winnername[1]
+    rows = db.execute("SELECT DISTINCT id FROM users WHERE firstname = ? AND lastname = ?", winnerfirstname, winnerlastname)
+    winnerid = rows[0]["id"]
+
     losername = loser.split()
     loserfirstname = losername[0]
     loserlastname = losername[1]
-    rows = db.execute("SELECT DISTINCT id FROM users WHERE firstname = ? and lastname = ?", loserfirstname, loserlastname)
+    rows = db.execute("SELECT DISTINCT id FROM users WHERE firstname = ? AND lastname = ?", loserfirstname, loserlastname)
     loserid = rows[0]["id"]
 
     # remove losers from competitors
-    db.execute("DELETE FROM competitors WHERE competitor_id = ?", loserid)
+    db.execute("DELETE FROM competitors WHERE competitor_id = ? AND division_id = ?", loserid, div_id)
 
-    #get compname
-    rows = db.execute("SELECT DISTINCT name FROM competitions WHERE id = ?", comp_id)
-    compname = rows[0]["name"]
+   
+    # check for gold medallist
+    count = db.execute("SELECT COUNT (*) FROM competitors WHERE division_id = ?", div_id)
+    count = count[0]["COUNT (*)"]
+    count = int(count)
     
-    # get matches
-    matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
-
-    # get results
-    results = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name, winner, method FROM matchresults WHERE comp_id = ?", comp_id)
-    return render_template("results.html", matches=matches, results=results, compname=compname)
-
-# next round
-@app.route("/nextround/<division>", methods=["POST"])
-@login_required
-def nextround(division):
-    div_id = division
-    # generate list of participants using div_id
-    participants = []
-    rows = db.execute("SELECT DISTINCT winner, comp_id, div_name FROM matchresults WHERE div_id = ?", div_id)
-    for i in range(len(rows)):
-        participant = rows[i]["winner"]
-        participants.append(participant)
+    if count == 1:
+        gold = winner
+        goldid = winnerid
+        silver = loser
+        silverid = loserid
+        # add results to final results table
+        db.execute("INSERT INTO competition_results (comp_id, comp_name, div_id, div_name, gold, gold_id, silver, silver_id) VALUES (?,?,?,?,?,?,?,?)", comp_id, compname, div_id, divname, gold, goldid, silver, silverid)
+        # get results
+        results = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name, winner, method FROM matchresults WHERE comp_id = ?", comp_id)
+        medallists = db.execute("SELECT DISTINCT div_name, gold, silver FROM competition_results WHERE comp_id = ?", comp_id)
+        return render_template("finalresults.html", medallists=medallists, divname=divname, results=results) 
     
-    #  get match rounds for calculating number of matches
-    matchesrd = len(participants) / 2
-    comp_id = rows[0]["comp_id"]
-    divname = rows[0]["div_name"]
-
-    # get competitors for matches
-    for i in range(matchesrd):
-                competitor1 = random.choice(participants)
-                participants.remove(competitor1)
-                competitor2 = random.choice(participants)
-                participants.remove(competitor2)
+    else:
     
-    # insert into matches table
-                db.execute("INSERT INTO matches (comp_id, div_id, div_name, competitor1_name, competitor2_name) VALUES (?,?,?,?,?)",
-                            comp_id, div_id, divname, competitor1, competitor2) 
+        # get compname
+        rows = db.execute("SELECT DISTINCT name FROM competitions WHERE id = ?", comp_id)
+        compname = rows[0]["name"]
     
-    matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
-    return render_template("brackets.html", matches=matches, divname=divname)
+        # get matches
+        matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
 
+        # get results
+        results = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name, winner, method FROM matchresults WHERE comp_id = ?", comp_id)
+        return render_template("results.html", matches=matches, results=results, compname=compname)
 
 # enter competition
 @app.route("/enter", methods=["GET"])
