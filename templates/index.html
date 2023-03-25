@@ -1,24 +1,66 @@
 {% extends "layout.html" %}
 
 {% block main %}
-<h2>User Profile</h2>
-<table class="table table-dark table-striped">
+<h2>Profile</h2>
+<table class="table table-dark table-striped" aria-label="uservictories">
     <thead>
         <tr>
-            <th>Username</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Name</th>
+            <th>Wins</th>
+            <th>Submission Rate</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>{{ username }}</td>
-            <td>{{ firstname | capitalize }}</td>
-            <td>{{ lastname | capitalize }}</td>
+            <td>{{ name | capitalize }}</td>
+            <td>{{ wins }}</td>
+            <td>{{ submissionrate }} %</td>
         </tr>
     </tbody>
 </table>
-<table class="table table-dark table-striped">
+
+<table class="table table-dark table-striped" aria-label="usersmedals">
+    <thead>
+        <tr>
+            <th>Medals</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Gold Medals:{{ gold }} </td>
+            <td>Silver Medals:{{ silver }} </td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Record</h2>
+
+<table class="table table-dark table-striped" aria-label="usersrecord">
+    <thead>
+        <tr>
+            <th>Division</th>
+            <th>Competitor</th>
+            <th>Competitor</th>
+            <th>Winner</th>
+            <th>Method</th>
+        </tr>
+    </thead> 
+    <tbody>
+      {% for result in results %}
+        <tr>
+            <td>{{ result['div_name'] }}</td>
+            <td>{{ result['competitor1_name'] }}</td>
+            <td>{{ result['competitor2_name'] }}</td>
+            <td>{{ result['winner'] }}</td>
+            <td>{{ result['method']| capitalize  }}</td>
+            <td>
+          </td>
+        </tr>
+        {% endfor %}    
+    </tbody>
+  </table> 
+
+<table class="table table-dark table-striped" aria-label="userscompetitions">
     <h2>Competitions Organized</h2>
     <thead>
         <th>Competition</th>
@@ -31,8 +73,9 @@
         {% endfor %}
     </tbody>
 </table>
-<table class="table table-dark table-striped">
-    <h2>Competitions Entered</h2>
+
+<table class="table table-dark table-striped" aria-label="usersupcomingcompetitions">
+    <h2>Upcoming Competitions</h2>
     <thead>
         <th>Competition</th>
         <th>Division</th>

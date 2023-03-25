@@ -44,9 +44,9 @@ def index():
     rows = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
     
     # get user data to display
-    username = rows[0]["username"]
     firstname = rows[0]["firstname"]
     lastname = rows[0]["lastname"]
+    name = firstname + " " + lastname
     
     # select user's created competitions to display
     competitions = []
@@ -59,8 +59,32 @@ def index():
     rows = db.execute("SELECT DISTINCT comp_name, name FROM divisions INNER JOIN competitors on competitors.division_id = divisions.id WHERE competitor_id = ?", session["user_id"])
     entered = rows
 
+    # select users victories
+    rows = db.execute("SELECT COUNT (*) FROM matchresults WHERE winner = ?", name)
+    wins = rows[0]["COUNT (*)"]
+
+    if wins == 0:
+        submissionrate = 0
+    
+    else:
+        # get submission victories
+        submission = "submission"
+        rows = db.execute("SELECT COUNT (*) FROM matchresults WHERE winner = ? AND method = ? ", name, submission)
+        submissions = rows[0]["COUNT (*)"]
+        # calculate submission rate
+        submissionrate = (submissions / wins) * 100
+
+    # select users medals
+    rows = db.execute("SELECT COUNT (*) FROM competition_results WHERE gold = ?", name)
+    gold = rows[0]["COUNT (*)"]
+    rows = db.execute("SELECT COUNT (*) FROM competition_results WHERE silver = ?", name)
+    silver = rows[0]["COUNT (*)"]
+
+    # select users match results
+    results = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name, winner, method FROM matchresults WHERE competitor1_name OR competitor2_name = ?", name)
+
     # render template
-    return render_template("index.html", username=username, firstname=firstname, lastname=lastname, competitions=competitions, entered=entered)
+    return render_template("index.html", name=name, wins=wins, submissionrate=submissionrate, gold=gold, silver=silver, results=results, competitions=competitions, entered=entered)
    
 # create competition
 @app.route("/create", methods=["GET", "POST"])
@@ -277,7 +301,7 @@ def start(competition):
 
                 # generate unique match id 
                 match_id = str(uuid4())
-                print(match_id)
+                
 
                 # insert match into matches table
                 db.execute("INSERT INTO matches (id, comp_id, div_id, div_name, competitor1_name, competitor2_name) VALUES (?,?,?,?,?,?)",
@@ -309,7 +333,7 @@ def match(id):
 
     return render_template("match.html", match=match, id=id)
 
-# record result
+# end match 
 @app.route("/endmatch/<id>", methods=["POST"])   
 @login_required
 def endmatch(id):
