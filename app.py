@@ -106,8 +106,8 @@ def create():
             compname = request.form.get("compname")
         
         # get format 
-        format = request.form["formatselect"]
-        if format == 'singleround':
+        format = request.form["format-select"]
+        if format == 'singleroundko':
             format = 'Single Round Elimination'
         elif format == 'roundrobin':
             format = 'Round Robin'
