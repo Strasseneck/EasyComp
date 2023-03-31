@@ -10,6 +10,7 @@ CREATE TABLE users (
 CREATE TABLE competitions (
     id INTEGER NOT NULL,
     name TEXT NOT NULL UNIQUE,
+    info TEXT NOT NULL,
     format TEXT NOT NULL,
     organizer_id INTEGER NOT NULL,
     PRIMARY KEY(id),

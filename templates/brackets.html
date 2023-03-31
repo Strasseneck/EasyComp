@@ -1,31 +1,42 @@
 {% extends "layout.html" %}
 
-{% block title %}
-    Brackets
-{% endblock %}
-
 {% block main %}
-<h2>{{ compname }} Brackets</h2>
+
+<h2>{{ name }}</h2>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/competition/{{ name }}">Info</a>
+        <a class="nav-link" href="/registrations/{{ name }}">Registrations</a>
+        <a class="nav-link active" href="/brackets/{{ name }}">Brackets</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<h2>Brackets</h2>
 
 <table class="table table-dark table-striped">
   <thead>
       <tr>
           <th>Division</th>
+          <th>Competitor One</th>
+          <th>Competitor Two</th>
       </tr>
   </thead> 
   <tbody>
-    {% for dict_item in displaydivs %}
+    {% for match in matches %}
       <tr>
-          <td>{{ dict_item['div_name'] }}</td>
-          <td>
-            <div class="d-flex flex-row mb-3">
-            <form action="/startdivision/{{ dict_item['div_id'] }}" method="post">
-              <button type="submit" class="btn btn-primary">Start Division</button>
-            </form>
-            </div>
-        </td>
+          <td>{{ match['div_name'] }}</td>
+          <td>{{ match['competitor1_name'] }}</td>
+          <td>{{ match['competitor2_name'] }}</td>
       </tr>  
-    {% endfor %}
+      {% endfor %}  
   </tbody>
 </table> 
 {% endblock %}

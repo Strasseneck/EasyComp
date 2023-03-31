@@ -11,25 +11,21 @@
   <thead>
       <tr>
           <th>Division</th>
-          <th>Competitor One</th>
-          <th>Competitor Two</th>
       </tr>
   </thead> 
   <tbody>
-    {% for match in matches %}
+    {% for dict_item in displaydivs %}
       <tr>
-          <td>{{ match['div_name'] }}</td>
-          <td>{{ match['competitor1_name'] }}</td>
-          <td>{{ match['competitor2_name'] }}</td>
+          <td>{{ dict_item['div_name'] }}</td>
           <td>
             <div class="d-flex flex-row mb-3">
-            <form action="/match/{{match['id']}}" method="post">
-              <button type="submit" class="btn btn-primary">Start Match</button>
+            <form action="/startdivision/{{ dict_item['div_id'] }}" method="post">
+              <button type="submit" class="btn btn-primary">Start Division</button>
             </form>
             </div>
         </td>
       </tr>  
-      {% endfor %}  
+    {% endfor %}
   </tbody>
 </table> 
 {% endblock %}
