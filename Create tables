@@ -62,7 +62,7 @@ CREATE TABLE matchresults (
     FOREIGN KEY(div_id) REFERENCES divisions(id)
 );
 
-CREATE TABLE competition_results (
+CREATE TABLE competitionresults (
     comp_id INTEGER NOT NULL,
     comp_name TEXT NOT NULL,
     div_id INTEGER NOT NULL,

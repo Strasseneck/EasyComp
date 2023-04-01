@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Competitions
+    Your Competitions
 {% endblock %}
 
 {% block main %}
@@ -10,9 +10,8 @@
   <div class="card-body">
     <h5 class="card-title">{{competition['name']}}</h5>
     <h6 class="card-subtitle mb-2 text-muted">{{ competition['format']}}</h6>
-    <p class="card-text"></p>
-    <a href="/registrations/{{competition['name']}}" class="card-link">Registrations</a>
-  </div>
+    <p class="card-text">{{ competition['info'] }}</p>
+    <a href="/yourcompetition/{{competition['name']}}" class="card-link">View Competition Page</a>
 </div>
 {% endfor %}
 {% endblock %}

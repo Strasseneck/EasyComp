@@ -10,7 +10,7 @@
   <div class="card-body">
     <h5 class="card-title">{{competition['name']}}</h5>
     <h6 class="card-subtitle mb-2 text-muted">{{ competition['format']}}</h6>
-    <p class="card-text"></p>
+    <p class="card-text">{{ competition['info'] }}</p>
     <a href="/competition/{{competition['name']}}" class="card-link">View Competition Page</a>
 </div>
 {% endfor %}

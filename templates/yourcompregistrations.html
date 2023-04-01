@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<h2>{{ name }}</h2>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link" href="/yourcompetition/{{ name }}">Info</a>
+          <a class="nav-link active" href="/yourcompregistrations/{{ name }}">Registrations</a>
+          <a class="nav-link" href="/yourcompbrackets/{{ name }}">Brackets / Results</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+{% for division in divisions %}
+
+<div class="accordion" id="accordionDivision">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          {{ division }}
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+        <div class="accordion-body">
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr></tr>
+                </thead> 
+                <tbody>
+                    {% set list1 = divisions[division] %}
+                    {% for elem in list1 %}
+                    <tr>
+                        <td>{{ elem }}</td>
+                    </tr>
+                    {% endfor %}   
+                </tbody>
+            </table>
+
+      </div>
+    </div>
+{% endfor %}
+
+{% endblock %}
