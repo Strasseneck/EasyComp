@@ -8,7 +8,7 @@
 {%for competition in competitions %}
 <div class="card" style="width: 18rem;" name="competitioncard">
   <div class="card-body">
-    <h5 class="card-title">{{competition['name']}}</h5>
+    <h5 class="card-title">{{competition['name']}}<img src="/static/images/vecteezy_flat-design-trophy-trophy-vector-isolated-on-white-background_6425320.jpg" width="30" height="30" alt="trophy"></h5>
     <h6 class="card-subtitle mb-2 text-muted">{{ competition['format']}}</h6>
     <p class="card-text">{{ competition['info'] }}</p>
     <a href="/yourcompetition/{{competition['name']}}" class="card-link">View Competition Page</a>

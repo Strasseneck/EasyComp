@@ -37,6 +37,23 @@
     </table>
 </div>
 
+<table class="table table-dark table-striped" aria-label="usersupcomingcompetitions">
+    <h2>Upcoming Competitions</h2>
+    <thead>
+        <th>Competition</th>
+        <th>Division</th>
+    </thead>
+    <tbody>
+        {% for entry in entered %}   
+        <tr>
+            <td>{{ entry["comp_name"]}}</td>
+            <td>{{ entry["name"]}}</td>
+         </tr>  
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
 <h2>Record</h2>
 
 <table class="table table-dark table-striped" aria-label="usersrecord">
@@ -64,21 +81,4 @@
     </tbody>
   </table> 
 
-
-<table class="table table-dark table-striped" aria-label="usersupcomingcompetitions">
-    <h2>Competitions You're Entering</h2>
-    <thead>
-        <th>Competition</th>
-        <th>Division</th>
-    </thead>
-    <tbody>
-        {% for entry in entered %}   
-        <tr>
-            <td>{{ entry["comp_name"]}}</td>
-            <td>{{ entry["name"]}}</td>
-         </tr>  
-        {% endfor %}
-    </tbody>
-</table>
-{% endblock %}
 

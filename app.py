@@ -198,6 +198,59 @@ def competition(name):
 
 ## ROUTES FOR ORGANIZERS ##
 
+# Create competition as organizer
+@app.route("/create", methods=["GET", "POST"])
+@login_required
+def create():
+    # if reached via post
+    if request.method == "POST":
+
+        # check for compname
+        if not request.form.get("compname"):
+            return apology("competition name creation required", 400)
+        
+        # check for duplicate compname
+        rows = db.execute("SELECT * FROM competitions WHERE name = ?", request.form.get("compname"))
+        if len(rows) > 0:
+            return apology("competition with same name already exists", 400)
+        else:
+            compname = request.form.get("compname")
+
+        # getinfo
+        info = request.form.get("compinfo")
+        
+        # get format 
+        format = request.form["format-select"]
+        if format == 'singleroundko':
+            format = 'Single Round Elimination'
+        elif format == 'roundrobin':
+            format = 'Round Robin'
+
+        # add new competition to competitions db
+        rows = db.execute("INSERT INTO competitions (name, info, format, organizer_id) VALUES (?,?,?,?)", compname, info, format, session["user_id"] )
+
+        # get comp_id for divisions db
+        rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name = ?", compname)
+        comp_id = rows[0]["id"]
+
+         # get belt classes
+        beltclasses = request.form.getlist("beltdivision")
+        
+        # get weight classes
+        weightclasses = request.form.getlist("weightclass")
+
+        # iterate through lists and add to divisions database
+        for i in range(len(beltclasses)):
+            for j in range(len(weightclasses)):
+                division = beltclasses[i] + weightclasses[j]
+                division = division.replace("-"," ")
+                rows = db.execute("INSERT INTO divisions (name, comp_id, comp_name) VALUES (?,?,?)", division, comp_id, compname)
+        
+        return redirect("/")
+     # if reached by get
+    else:
+        return render_template("create-comp.html")
+
 # Organizer panel 
 @app.route("/organizerpanel", methods = ["GET"])
 @login_required
@@ -318,7 +371,6 @@ def yourcompbrackets(name):
 @app.route("/generatebrackets/<name>", methods=["GET", "POST"])
 @login_required
 def generatebrackets(name):
-    
     
     #get id and name of competition
     rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name = ?", name)
@@ -471,8 +523,7 @@ def endmatch(id):
     # remove losers from competitors
     db.execute("DELETE FROM competitors WHERE competitor_id = ? AND division_id = ?", loserid, div_id)
 
-   
-    # check for gold medallist
+    # check for gold medallist aka end of division
     count = db.execute("SELECT COUNT (*) FROM competitors WHERE division_id = ?", div_id)
     count = count[0]["COUNT (*)"]
     count = int(count)
@@ -493,6 +544,8 @@ def endmatch(id):
         # delete winner from competitors
         db.execute("DELETE FROM competitors WHERE competitor_id = ? AND division_id = ?", winnerid, div_id)
 
+        # delete division from divisions
+        db.execute("DELETE FROM divisions WHERE id = ?", div_id)
         # get matches
         matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
         name = compname 
@@ -514,10 +567,7 @@ def endmatch(id):
         results = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name, winner, method FROM matchresults WHERE comp_id = ?", comp_id)
         return render_template("yourcompbrackets.html", matches=matches, results=results, name=name)
 
-# Create competition as organizer
-@app.route("/create", methods=["GET", "POST"])
-@login_required
-def create():
+
 
     # if reached via post
     if request.method == "POST":
@@ -569,10 +619,19 @@ def create():
         return render_template("create-comp.html")
 
 # End competition as organizer
-@app.route("/delete/<name>", methods=["GET", "POST"])
+@app.route("/end/<name>", methods=["GET", "POST"])
 @login_required
-def delete():
-    return 'to do'
+def end(name):
+
+    # define the info
+    info = "This competition has already taken place."
+
+    # update info in competitons
+    db.execute("UPDATE competitions SET info = ? WHERE name = ?", info, name)
+
+    # render template
+    return redirect("/organizerpanel")
+
 
 ## ROUTES FOR COMPETITORS ##
 
@@ -581,9 +640,14 @@ def delete():
 @login_required
 def registrations(name):
 
-    # get comp_id
-    rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name = ?", name)
+    # get comp_id and info
+    rows = db.execute("SELECT DISTINCT id, info FROM competitions WHERE name = ?", name)
     comp_id = rows[0]["id"]
+    
+    # check if competitition is finished
+    info = rows[0]["info"]
+    if info == "This competition has already taken place":
+        return render_template("registrationsfinished.html", name=name)
 
     # division objects 
     divisions = {}

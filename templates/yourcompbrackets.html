@@ -4,6 +4,11 @@
 
 <h2>{{ name }}</h2>
 
+<form action="/end/{{ name }}" method="post">
+  <button type="submit" class="btn btn-primary">End Competition</button>
+</form>
+
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +25,7 @@
 </nav>
 
 <h2>Upcoming Matches</h2> 
+
 <form action="/generatebrackets/{{ name }}" method="post">
   <button type="submit" class="btn btn-primary">Generate Matches</button>
 </form>

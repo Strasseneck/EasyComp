@@ -2,11 +2,8 @@
 
 {% block main %}
 
-<h2>{{ name }}</h2> 
+<h2>{{ name }}</h2>
 
-<form action="/end/{{ name }}" method="post">
-  <button type="submit" class="btn btn-primary">End Competition</button>
-</form>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
@@ -15,16 +12,14 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link active" aria-current="page" href="/yourcompetition/{{ name }}">Info</a>
-          <a class="nav-link" href="/yourcompregistrations/{{ name }}">Registrations</a>
-          <a class="nav-link" href="/yourcompbrackets/{{ name }}">Brackets / Results</a>
+          <a class="nav-link" href="/competition/{{ name }}">Info</a>
+          <a class="nav-link active" href="/registrations/{{ name }}">Registrations</a>
+          <a class="nav-link" href="/brackets/{{ name }}">Brackets / Results</a>
         </div>
       </div>
     </div>
   </nav>
 
-  <div class="container-fluid">
-    <p>{{ info }}</p>
-  </div>
+  <p>This competition has already taken place and registrations are no longer possible. Results are available on the brackets / results page.</p>
 
 {% endblock %}
