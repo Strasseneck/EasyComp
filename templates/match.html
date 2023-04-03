@@ -36,7 +36,7 @@
                     </div>           
             </div>
             <div class="container">
-                <h1 id="clock">10:00</h1>
+                <h1 id="clock">{{ displaymins }}</h1>
                 <div class="btn-group">
                     <button onclick="startClock()" class="btn-start">Start</button>
                     <button onclick="pauseClock()" class="btn-pause">Pause</button>
@@ -93,7 +93,7 @@ const btnPause = document.querySelector(".btn-pause");
 // clock variables
 const clock = document.getElementById('clock');
 let clockInterval;
-mins = 09;
+mins = {{ realmins }};
 secs = 60;
 let paused = false;
 

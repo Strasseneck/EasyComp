@@ -463,11 +463,32 @@ def generatebrackets(name):
 @app.route("/match/<id>", methods=["POST"])
 @login_required
 def match(id):
+
     # get match info
-    rows = db.execute("SELECT DISTINCT competitor1_name, competitor2_name FROM matches WHERE id = ?", id)
+    rows = db.execute("SELECT DISTINCT div_name, competitor1_name, competitor2_name FROM matches WHERE id = ?", id)
     match = rows[0]
 
-    return render_template("match.html", match=match, id=id)
+    # determine match length based on division
+    division = rows[0]['div_name']
+    division = division.split()
+    division = division[0]
+    if division == "White":
+        displaymins = "05:00"
+        realmins = 4
+    elif division == "Blue":
+        displaymins = "06:00"
+        realmins = 5
+    elif division == "Purple":
+        displaymins = "07:00"
+        realmins = 6
+    elif division == "Brown":
+        displaymins = "08:00"
+        realmins = 7
+    elif division == "Black":
+        displaymins = "10:00"
+        realmins = 9
+
+    return render_template("match.html", match=match, id=id, realmins=realmins, displaymins=displaymins)
 
 # End match as organizer
 @app.route("/endmatch/<id>", methods=["POST"])   
@@ -567,56 +588,6 @@ def endmatch(id):
         results = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name, winner, method FROM matchresults WHERE comp_id = ?", comp_id)
         return render_template("yourcompbrackets.html", matches=matches, results=results, name=name)
 
-
-
-    # if reached via post
-    if request.method == "POST":
-
-        # check for compname
-        if not request.form.get("compname"):
-            return apology("competition name creation required", 400)
-        
-        # check for duplicate compname
-        rows = db.execute("SELECT * FROM competitions WHERE name = ?", request.form.get("compname"))
-        if len(rows) > 0:
-            return apology("competition with same name already exists", 400)
-        else:
-            compname = request.form.get("compname")
-
-        # getinfo
-        info = request.form.get("compinfo")
-        
-        # get format 
-        format = request.form["format-select"]
-        if format == 'singleroundko':
-            format = 'Single Round Elimination'
-        elif format == 'roundrobin':
-            format = 'Round Robin'
-
-        # add new competition to competitions db
-        rows = db.execute("INSERT INTO competitions (name, info, format, organizer_id) VALUES (?,?,?,?)", compname, info, format, session["user_id"] )
-
-        # get comp_id for divisions db
-        rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name = ?", compname)
-        comp_id = rows[0]["id"]
-
-         # get belt classes
-        beltclasses = request.form.getlist("beltdivision")
-        
-        # get weight classes
-        weightclasses = request.form.getlist("weightclass")
-
-        # iterate through lists and add to divisions database
-        for i in range(len(beltclasses)):
-            for j in range(len(weightclasses)):
-                division = beltclasses[i] + weightclasses[j]
-                division = division.replace("-"," ")
-                rows = db.execute("INSERT INTO divisions (name, comp_id, comp_name) VALUES (?,?,?)", division, comp_id, compname)
-        
-        return redirect("/")
-     # if reached by get
-    else:
-        return render_template("create-comp.html")
 
 # End competition as organizer
 @app.route("/end/<name>", methods=["GET", "POST"])
