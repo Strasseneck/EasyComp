@@ -1,84 +1,38 @@
 {% extends "layout.html" %}
 
-{% block main %}
-<div class="flex-container">
-    <h2>Profile</h2>
-    <h3>{{ name | capitalize }}</h3>
-</div>
-
-
-<div class="flex-container">
-    <table class="table table-dark table-striped" aria-label="uservictories">
-        <thead>
-            <tr>
-                <th>Wins</th>
-                <th>Submission Rate</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ wins }}</td>
-                <td>{{ submissionrate }} %</td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-dark table-striped" aria-label="usersmedals">
-        <thead>
-            <tr>
-                <th>Medals</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><img src="/static/images/gold-medal-svgrepo-com.svg" width="30" height="30" alt="gold"> {{ gold }} </td>
-                <td><img src="/static/images/silver-medal-svgrepo-com.svg" width="30" height="30" alt="silver"> {{ silver }} </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<table class="table table-dark table-striped" aria-label="usersupcomingcompetitions">
-    <h2>Upcoming Competitions</h2>
-    <thead>
-        <th>Competition</th>
-        <th>Division</th>
-    </thead>
-    <tbody>
-        {% for entry in entered %}   
-        <tr>
-            <td>{{ entry["comp_name"]}}</td>
-            <td>{{ entry["name"]}}</td>
-         </tr>  
-        {% endfor %}
-    </tbody>
-</table>
+{% block title %}
+    Index
 {% endblock %}
 
-<h2>Record</h2>
-
-<table class="table table-dark table-striped" aria-label="usersrecord">
-    <thead>
-        <tr>
-            <th>Division</th>
-            <th>Competitor</th>
-            <th>Competitor</th>
-            <th>Winner</th>
-            <th>Method</th>
-        </tr>
-    </thead> 
-    <tbody>
-      {% for result in results %}
-        <tr>
-            <td>{{ result['div_name'] }}</td>
-            <td>{{ result['competitor1_name'] }}</td>
-            <td>{{ result['competitor2_name'] }}</td>
-            <td>{{ result['winner'] }}</td>
-            <td>{{ result['method']| capitalize  }}</td>
-            <td>
-          </td>
-        </tr>
-        {% endfor %}    
-    </tbody>
-  </table> 
-
-
+{% block main %}
+<div class="container-fullscreen">
+    <div id="background-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="5000">
+            <div class="gradient">
+                <img src="/static/images/background1.jpg" class="d-block w-100" alt="background1"> 
+            </div>
+            <div class="carousel-content">
+                <div class="text-container">
+                    <h1>
+                        <strong>Plan, organize and run a jiu-jitsu tournament the easy way!</strong>
+                    </h1>
+                </div>
+            </div>    
+        </div>
+        <div class="carousel-item" data-bs-interval="5000">
+            <div class="gradient">
+                <img src="/static/images/background2.jpg" class="d-block w-100" alt="background2">
+            </div>
+            <div class="carousel-content">
+                <div class="text-container">
+                    <h1>
+                        <strong>Packed full of features for both organizers and competitiors!</strong>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
