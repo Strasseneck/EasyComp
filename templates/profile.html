@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<section id="userprofile" class="profile"> 
+<div class="container-fullscreen">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <h1 class="text-center text-uppercase font-size-xxl bold">{{ name | upper }}</h1>
+                    <img src="/static/images/user.png" style="width: 18rem; height: 18rem;">
+                </div>
+            
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="card text-white bg-dark" style="width: 18rem;" name="userstatscard">
+                        <table class="table table-dark table-striped" aria-label="usersmedals">
+                            <thead>
+                                <tr>
+                                    <th>Gold</th>
+                                    <th>Silver</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><img src="/static/images/gold-medal-svgrepo-com.svg" width="30" height="30" alt="gold"> {{ gold }} </td>
+                                    <td><img src="/static/images/silver-medal-svgrepo-com.svg" width="30" height="30" alt="silver"> {{ silver }} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-dark table-striped" aria-label="uservictories">
+                            <thead>
+                                <tr>
+                                    <th>Wins</th>
+                                    <th>Submission Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ wins }}</td>
+                                    <td>{{ submissionrate }} %</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> 
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">                
+                    <div class="card text-white bg-dark" style="width: 100vh;" name="userregistrationscard">  
+                        <table class="table table-dark table-striped" aria-label="usersupcomingcompetitions">
+                            <h2>Upcoming Competitions</h2>
+                            <thead>
+                                <th>Competition</th>
+                                <th>Division</th>
+                            </thead>
+                            <tbody>
+                                {% for entry in entered %}   
+                                <tr>
+                                    <td>{{ entry["comp_name"]}}</td>
+                                    <td>{{ entry["name"]}}</td>
+                                </tr>  
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">           
+                    <div class="card text-white bg-dark" style="width: 100vh;" name="usersrecordcard">
+                        <table class="table table-dark table-striped" aria-label="usersrecord">
+                            <h2>Record</h2>
+                            <thead>
+                                <tr>
+                                    <th>Division</th>
+                                    <th>Competitor</th>
+                                    <th>Competitor</th>
+                                    <th>Winner</th>
+                                    <th>Method</th>
+                                </tr>
+                            </thead> 
+                            <tbody>
+                            {% for result in results %}
+                                <tr>
+                                    <td>{{ result['div_name'] }}</td>
+                                    <td>{{ result['competitor1_name'] }}</td>
+                                    <td>{{ result['competitor2_name'] }}</td>
+                                    <td>{{ result['winner'] }}</td>
+                                    <td>{{ result['method']| capitalize  }}</td>
+                                    <td>
+                                </td>
+                                </tr>
+                                {% endfor %}    
+                            </tbody>
+                        </table> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+  {% endblock %}

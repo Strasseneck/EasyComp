@@ -37,6 +37,11 @@ def after_request(response):
 
 ## ROUTE FOR ALL USERS ##
 
+# Index
+@app.route("/", methods=["GET", "POST"])
+def index():
+    return render_template("index.html")
+
 # Login
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -125,10 +130,10 @@ def register():
     else:
         return render_template("register.html")
 
-# Index / user profile page
-@app.route("/")
+# Profile page
+@app.route("/profile")
 @login_required
-def index():
+def profile():
 
     # select user data
     rows = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
@@ -167,7 +172,7 @@ def index():
     results = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name, winner, method FROM matchresults WHERE competitor1_name = ? OR competitor2_name = ?", name, name)
 
     # render template
-    return render_template("index.html", name=name, wins=wins, submissionrate=submissionrate, gold=gold, silver=silver, results=results, entered=entered)
+    return render_template("profile.html", name=name, wins=wins, submissionrate=submissionrate, gold=gold, silver=silver, results=results, entered=entered)
 
 # View Competitions
 @app.route("/competitions", methods=["GET"]) 
@@ -334,39 +339,6 @@ def yourcompbrackets(name):
     return render_template("yourcompbrackets.html", matches=matches, name=name, results=results, medallists=medallists)
 
 
-
-    divisions = {}
-    divnames = []
-    divids = []
-    # select competitons created by user
-    competitions = db.execute("SELECT DISTINCT name, format FROM competitions WHERE organizer_id = ?", session["user_id"])
-
-    comprows = db.execute("SELECT DISTINCT id FROM competitions WHERE organizer_id = ?", session["user_id"])
-    for i in range(len(comprows)):
-        compid = comprows[0]["id"]
-        # get division name and id
-        rows = db.execute("SELECT DISTINCT id, name FROM divisions INNER JOIN competitors on competitors.division_id = divisions.id WHERE competition_id = ?", compid)
-        for i in range(len(rows)):
-            divname = rows[i]["name"]
-            divnames.append(divname)
-            divid = rows[i]["id"] 
-            divids.append(divid)
-    
-    # get competitors names for each division
-    for i in range(len(divids)):
-        competitors = []
-        divid = divids[i] 
-        divname = divnames[i]
-        rows = db.execute("SELECT DISTINCT firstname, lastname FROM users INNER JOIN competitors on competitors.competitor_id = users.id WHERE division_id = ?", divid)
-        for j in range(len(rows)):
-            competitor = (rows[j]["firstname"] + " " + rows[j]["lastname"])
-            competitors.append(competitor)
-        # add values to divisions dict        
-        divisions[divname] = competitors
-
-    #render template
-    return render_template("manage.html", divisions=divisions, competitions=competitions)
-
 # Generate brackets if not already generated
 @app.route("/generatebrackets/<name>", methods=["GET", "POST"])
 @login_required
@@ -522,8 +494,8 @@ def endmatch(id):
     method = request.form.get("victory-method")
 
     # add match to matchresults table
-    db.execute("INSERT INTO matchresults (id, comp_id, div_id, div_name, competitor1_name, competitor2_name, winner, method) VALUES (?,?,?,?,?,?,?,?)",
-                            id, comp_id, div_id, divname, competitor1, competitor2 , winner, method) 
+    db.execute("INSERT INTO matchresults (id, comp_id, div_name, competitor1_name, competitor2_name, winner, method) VALUES (?,?,?,?,?,?,?)",
+                            id, comp_id, divname, competitor1, competitor2 , winner, method) 
     
     # remove match from matches
     db.execute("DELETE FROM matches WHERE id = ?", id)
@@ -556,7 +528,7 @@ def endmatch(id):
         silverid = loserid
         
         # add results to final results table
-        db.execute("INSERT INTO competitionresults (comp_id, comp_name, div_id, div_name, gold, gold_id, silver, silver_id) VALUES (?,?,?,?,?,?,?,?)", comp_id, compname, div_id, divname, gold, goldid, silver, silverid)
+        db.execute("INSERT INTO competitionresults (comp_id, comp_name, div_name, gold, gold_id, silver, silver_id) VALUES (?,?,?,?,?,?,?)", comp_id, compname, divname, gold, goldid, silver, silverid)
         
         # get results
         results = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name, winner, method FROM matchresults WHERE comp_id = ?", comp_id)
@@ -567,6 +539,7 @@ def endmatch(id):
 
         # delete division from divisions
         db.execute("DELETE FROM divisions WHERE id = ?", div_id)
+
         # get matches
         matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
         name = compname 
