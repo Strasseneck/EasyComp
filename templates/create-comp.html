@@ -5,152 +5,175 @@
 {% endblock %}
 
 {% block main %}
-    <form action="/create" method="post">
-        <div class="mb-3">
-            <label for="compname" class="form-label">Competition Name</label>
-            <input autocomplete="off" id="compname" name="compname" placeholder="Competition Name" type="text">      
+<section>
+    <div class="container-fullscreen">
+        <div class="container">
+            <form action="/create" method="post">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="compname" class="form-label"><strong><img src="/static/images/trophy-icon.png" width="50" height="50">  Competition Name</strong></label>
+                                <div class="row"><input class="form-control" autofocus autocomplete="off" id="compname" name="compname" placeholder="Competition Name" type="text"></div>      
+                            </div>
+                            <div class="form-group">
+                                <select id="format-select" name="format-select" class="form-select form-select" aria-label="format-select">
+                                    <option selected>Competition Format</option>
+                                    <option value="singleroundko">Single Round Elimination</option>
+                                    <option value="roundrobin" disabled>Round Robin</option>
+                                </select>
+                            </div>    
+                            <div class="form-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" id="belt-divisions-dropdown">Select Divisions</button>
+                                        <ul class="dropdown-menu" aria-label="belt-divisions-dropdown">
+                                            <li>
+                                                <a class="dropdown-item">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="White-" id="beltdivision" name="beltdivision">
+                                                        <label class="form-check-label" for="white">Whitebelt</label>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="Blue-" id="beltdivision" name="beltdivision">
+                                                        <label class="form-check-label" for="blue">Bluebelt</label>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="Purple-" id="beltdivision" name="beltdivision">
+                                                        <label class="form-check-label" for="purple">Purplebelt</label>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="Brown-" id="beltdivision" name="beltdivision">
+                                                        <label class="form-check-label" for="brown">Brownbelt</label>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        <li>
+                                            <a class="dropdown-item">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="Black-" id="beltdivision" name="beltdivision">
+                                                    <label class="form-check-label" for="black">Blackbelt</label>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <div class="panel-body">
+                            <div class="input-group">
+                                <label for="compinfo" class="form-label"><strong>Competition Information</strong></label>
+                                <div class="row">
+                                    <textarea class="form-control" rows="5" cols="40" id="compinfo" name="compinfo" aria-label="competiton information">Please provide a short description of your competition with all relevant details.
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="dropdown">
+                                <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" id="weightclasses-dropdown">Select Weightclasses</button>
+                                <ul class="dropdown-menu" aria-label="weightclasses-dropdown">
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Rooster-57.5kg" id="weightclass" name="weightclass">
+                                                <label class="form-check-label" for="rooster">Roosterweight 57.5kg</label>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Superfeather-65kg" id="weightclass" name="weightclass">
+                                                <label class="form-check-label" for="superfeather">Superfeatherweight 64kg</label>   
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Feather-70kg" id="weightclass" name="weightclass">
+                                                <label class="form-check-label" for="feather">Featherweight 70kg</label> 
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Light-76kg" id="weightclass" name="weightclass">
+                                                <label class="form-check-label" for="light">Lightweight 76kg</label>            
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Middle-82.3kg" id="weightclass" name="weightclass">
+                                                <label class="form-check-label" for="middle">Middleweight 82.3kg</label>          
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Mediumheavy-88.3kg" id="weightclass" name="weightclass">
+                                                <label class="form-check-label" for="mediumheavy">Medium Heavy 88.3kg</label>         
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Heavy-94.3kg" id="weightclass" name="weightclass">
+                                                <label class="form-check-label" for="heavy">Heavy 94.3kg</label>       
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Superheavy-100.5kg" id="weightclass" name="weightclass">
+                                                <label class="form-check-label" for="superheavy">Superheavy 100.5kg</label>     
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Ultraheavy-nolimit" id="weightclass" name="weightclass">
+                                                <label class="form-check-label" for="ultraheavy">Ultra Heavy (No-limit)</label>    
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Open" id="weightclass" name="weightclass">
+                                                <label class="form-check-label" for="open">Open Class</label>    
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>       
+                <button class="btn btn-primary" type="submit">Create Competition</button>
+            </form>
         </div>
-        <div class="mb-3">
-            <label for="compinfo" class="form-label">Competition Information</label>
-            <input autocomplete="off" id="compinfo" name="compinfo" size="100" placeholder="Please provide a short description of your event. Remember to include, date, location, ruleset and your organization's contact details" type="text">
-        </div>
-        <select id="format-select" name="format-select" class="form-select" aria-label="format-select">
-            <option selected>Competition Format</option>
-            <option value="singleroundko">Single Round Elimination</option>
-            <option value="roundrobin" disabled>Round Robin</option>
-        </select>
-       
-        <div class="dropdown">
-            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" id="belt-divisions-dropdown">Select Divisions</button>
-            <ul class="dropdown-menu" aria-label="belt-divisions-dropdown">
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="White-" id="beltdivision" name="beltdivision">
-                            <label class="form-check-label" for="white">Whitebelt</label>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Blue-" id="beltdivision" name="beltdivision">
-                            <label class="form-check-label" for="blue">Bluebelt</label>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Purple-" id="beltdivision" name="beltdivision">
-                            <label class="form-check-label" for="purple">Purplebelt</label>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Brown-" id="beltdivision" name="beltdivision">
-                            <label class="form-check-label" for="brown">Brownbelt</label>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Black-" id="beltdivision" name="beltdivision">
-                            <label class="form-check-label" for="black">Blackbelt</label>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="dropdown">
-            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" id="weightclasses-dropdown">Select Weightclasses</button>
-            <ul class="dropdown-menu" aria-label="weightclasses-dropdown">
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Rooster-57.5kg" id="weightclass" name="weightclass">
-                            <label class="form-check-label" for="rooster">Roosterweight 57.5kg</label>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Superfeather-65kg" id="weightclass" name="weightclass">
-                            <label class="form-check-label" for="superfeather">Superfeatherweight 64kg</label>   
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Feather-70kg" id="weightclass" name="weightclass">
-                            <label class="form-check-label" for="feather">Featherweight 70kg</label> 
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Light-76kg" id="weightclass" name="weightclass">
-                            <label class="form-check-label" for="light">Lightweight 76kg</label>            
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Middle-82.3kg" id="weightclass" name="weightclass">
-                            <label class="form-check-label" for="middle">Middleweight 82.3kg</label>          
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Mediumheavy-88.3kg" id="weightclass" name="weightclass">
-                            <label class="form-check-label" for="mediumheavy">Medium Heavy 88.3kg</label>         
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Heavy-94.3kg" id="weightclass" name="weightclass">
-                            <label class="form-check-label" for="heavy">Heavy 94.3kg</label>       
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Superheavy-100.5kg" id="weightclass" name="weightclass">
-                            <label class="form-check-label" for="superheavy">Superheavy 100.5kg</label>     
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Ultraheavy-nolimit" id="weightclass" name="weightclass">
-                            <label class="form-check-label" for="ultraheavy">Ultra Heavy (No-limit)</label>    
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Open" id="weightclass" name="weightclass">
-                            <label class="form-check-label" for="open">Open Class</label>    
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <button class="btn btn-dark" type="submit">Create Competition</button>
-    </form>
+    </div>
+</section>
 {% endblock %}

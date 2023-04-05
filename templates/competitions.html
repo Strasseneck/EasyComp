@@ -5,13 +5,29 @@
 {% endblock %}
 
 {% block main %}
-{%for competition in competitions %}
-<div class="card" style="width: 18rem;" name="competitioncard">
-  <div class="card-body">
-    <h5 class="card-title">{{competition['name']}}<img src="/static/images/vecteezy_flat-design-trophy-trophy-vector-isolated-on-white-background_6425320.jpg" width="30" height="30" alt="trophy"></h5>
-    <h6 class="card-subtitle mb-2 text-muted">{{ competition['format']}}</h6>
-    <p class="card-text">{{ competition['info'] }}</p>
-    <a href="/competition/{{competition['name']}}" class="card-link">View Competition Page</a>
+
+<div class="container-fullscreen">
+
+{% for competition in competitions %}
+
+<div class="event-card-container">
+  <div class="card text-center text-white border-light bg-dark" style="width:18rem" name="competitioncard">
+    <img class="darkened-image card-image" src="/static/images/two-judokas-fighters-posing.jpg">
+    <div class="card-img-overlay card-image">
+      <h5 class="card-title"><img src="/static/images/trophy-icon.png" width="30" height="30" alt="trophy"><strong> {{competition['name'] | upper }}</strong></h5>
+      <div class="card-body">
+        <h6 class="card-subtitle">{{ competition['format']}}</h6>
+        <p class="card-text">{{ competition['info'] }}</p>
+        <a class="nav-link" href="/competition/{{competition['name']}}"><button class="btn btn-secondary btn-block">View Competition Page</button></a>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+
 {% endfor %}
+
+</div>
+
 {% endblock %}

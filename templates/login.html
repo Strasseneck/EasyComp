@@ -5,11 +5,12 @@
 {% endblock %}
 
 {% block main %}
-<section>
-    <div class="container" id="login">
+
+    <div class="container-login" id="login">
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
-                <div class="panel-body">
+            <div class="col-5">
+                <div class="panel-body card">
+                    <img src="/static/images/armbarblack.png" alt="armbar">
                     <div class="row">
                         <form action="/login" method="post">
                             <div class="form-group">
@@ -19,21 +20,21 @@
                                 <input class="form-control mx-auto" id="password" name="password" placeholder="Password" type="password">            
                             </div>
                             <div class="mb-3">
-                                <button class="btn-primary btn-block" type="submit">Log in</button>
+                                <button class="btn btn-primary btn-block" type="submit">Log in</button>
                             </div>  
-                        </form>
-                       
+                        </form>       
                     </div>
-                </div>
+                </div> 
             </div>
-            <div class="col-sm-6 col-sm-offset-3">
-                <div class="panel-body">
+            <div class="col-5">
+                <div class="text-container">
                     <div class="row">
-                        <img src="/static/images/armbarblack.png">
+                        <h1><strong>Don't tap out to the stress of organization, use EasyComp!</strong></h1>
                     </div>
                 </div>
-            </div>
+            </div>     
         </div>
     </div>
-</section>
+   
+
     {% endblock %}
