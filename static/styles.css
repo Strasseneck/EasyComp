@@ -2,6 +2,7 @@
     font-family: Inter, Helvetica, Arial, sans-serif;
 }
 
+
 .bold {
     font-weight: 700;
 }
@@ -25,14 +26,18 @@ width: 100%;
     padding-top: 20px;   
 }
 
-.container-fullscreen{
+.container-flex {
+    display: flex;
+    flex-direction: column;
+}
+.container-fullscreen {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
-    min-height: 60vh;
-    padding-bottom: 3vh;
+    min-height: 100vh;
+    min-width: 100vh;
 }
 .carousel-item {
     width: 100 vh;
@@ -51,21 +56,34 @@ width: 100%;
 .font-size-xxl {
     line-height: 1.2;
 }
+
 .form-group {
     margin-bottom:15px;
     width: 100%;
 }
-.gradient {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    z-index: 19;
-    top: 0;
-    left: 0;
-    background: linear-gradient(120deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 100%);
-    opacity: 0.5;
+
+.darkened-image {
+    filter: brightness(85%);
 }
 
+.login-btn {
+    margin: 11px;
+    border-bottom: 3px;
+    padding: 7px 15px;
+}
+.long-text-input {
+    height: 200px;
+}
+
+.navbar {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+}
+
+.nav-link{
+    padding: 0rem;
+}
 .panel-body {
     perspective: 800px;
     padding-left: 25px;
@@ -84,6 +102,7 @@ width: 100%;
 }
 
 section {
+    background-color: currentColor;
     padding-top: 64px;
     padding-top: 4.26666667rem;
     padding-bottom: 64px;
