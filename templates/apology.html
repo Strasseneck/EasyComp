@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block main %}
-    <!-- https://memegen.link/ -->
-    <img alt="{{ top }}" class="border img-fluid" src="https://api.memegen.link/images/custom/{{top | urlencode }}/{{ bottom | urlencode }}.jpg?background=https://jiujitsutimes.com/wp-content/uploads/adam6.jpg&width=400" title="{{ top }}">
+    <div class="container-fullscreen">
+        <div class="container-apology">
+            <!-- https://memegen.link/ -->
+            <img alt="{{ top }}" class="border img-fluid" src="https://api.memegen.link/images/custom/{{top | urlencode }}/{{ bottom | urlencode }}.jpg?background=https://jiujitsutimes.com/wp-content/uploads/adam6.jpg&width=400" title="{{ top }}">
+        </div>
+    </div>
 {% endblock %}

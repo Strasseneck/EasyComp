@@ -379,7 +379,7 @@ def yourcompregistrations(name):
     # render template
     return render_template("yourcompregistrations.html", divisions=divisions, name=name, registrations=registrations)
 
-# Your competition brackets
+# Your competition brackets / results
 @app.route("/yourcompbrackets/<name>", methods=["GET"])
 @login_required
 def yourcompbrackets(name):
@@ -703,7 +703,7 @@ def registrations(name):
     # render template
     return render_template("registrations.html", divisions=divisions, name=name, registrations=registrations)
 
-# view brackets as competitor
+# view brackets / results  as competitor
 @app.route("/brackets/<name>", methods=["GET"])
 @login_required
 def brackets(name):
@@ -740,9 +740,13 @@ def brackets(name):
                 competitor = (rows[j]["firstname"] + " " + rows[j]["lastname"])
                 registrations += 1
     
+    # get results
+    results = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name, winner, method FROM matchresults WHERE comp_id = ?", comp_id)
+    medallists = db.execute("SELECT DISTINCT div_name, gold, silver FROM competitionresults WHERE comp_id = ?", comp_id)
+
     # get brackets
     matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
-    return render_template("brackets.html", matches=matches, name=name, registrations=registrations)
+    return render_template("brackets.html", matches=matches, name=name, registrations=registrations, results=results, medallists=medallists)
 
 # enter division as competitor
 @app.route("/enterdivision/<name>", methods=["GET"])

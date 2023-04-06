@@ -11,8 +11,8 @@
         <title>Match</title>
     </head>
     <body>
-        <div class="container-fluid">
-            <div class="container">
+        <div class="container-fluid bg-dark text-white">
+            <div class="container bg-dark text-white">
                 <h1>{{ match['competitor1_name']}}</h1>
                 <h2>Score</h2>
                 <span id="scoreboard1">0</span>
@@ -38,25 +38,27 @@
             <div class="container">
                 <h1 id="clock">{{ displaymins }}</h1>
                 <div class="btn-group">
-                    <button onclick="startClock()" class="btn-start">Start</button>
-                    <button onclick="pauseClock()" class="btn-pause">Pause</button>
+                    <button onclick="startClock()" class="btn-start btn-primary btn-sm">Start</button>
+                    <button onclick="pauseClock()" class="btn-pause btn-primary btn-sm">Pause</button>
                 </div>
                 <br>
-                <form action="/endmatch/{{id}}" method="post" name="victory-form">
-                    <select id="winner-select"  name="winner-select" class="form-select" aria-label="winner-select">
-                        <option selected>Choose Winner</option>
-                        <option value ="1">{{match['competitor1_name']}}</option>                      
-                        <option value ="2">{{match['competitor2_name']}}</option>
-                    </select>
-                    <select id="victory-method" name="victory-method" class="form-select">
-                        <option selected>Choose Victory Method</option>
-                        <option value ="submission">Submission</option>
-                        <option value ="points">Points</option>
-                        <option value ="decision">Decision</option>
-                        <option value ="dq">DQ</option>
-                    </select>  
-                    <button class="btn" type="submit">Submit</button>
-                </form>
+                <div class="form-group">
+                    <form action="/endmatch/{{id}}" method="post" name="victory-form">
+                        <select id="winner-select"  name="winner-select" class="form-select" aria-label="winner-select">
+                            <option selected>Choose Winner</option>
+                            <option value ="1">{{match['competitor1_name']}}</option>                      
+                            <option value ="2">{{match['competitor2_name']}}</option>
+                        </select>
+                        <select id="victory-method" name="victory-method" class="form-select">
+                            <option selected>Choose Victory Method</option>
+                            <option value ="submission">Submission</option>
+                            <option value ="points">Points</option>
+                            <option value ="decision">Decision</option>
+                            <option value ="dq">DQ</option>
+                        </select>  
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </form>
+                </div>
             </div>
                 <div id="comp2" class="container">
                     <h1>{{ match['competitor2_name'] }}</h1>
@@ -210,6 +212,9 @@ btns.forEach((btn) => {
         }
         else if(styles.contains('-2pts')) {
             score1 -= 2;
+        }
+        else if(styles.contains('-advantage')) {
+            adv1 --;
         }
         else if(styles.contains('-penalty')) {
             pen1 --;

@@ -3,6 +3,21 @@
     font-family: Inter, Helvetica, Arial, sans-serif;
 }
 
+.badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: .75rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #8d9799;
+    border-radius: 10px;
+}
+
 body {
     margin: 0;
     max-height: 100%;
@@ -28,6 +43,10 @@ body {
     perspective: 800;
 }
 
+.card-image {
+    object-fit: contain;
+}
+
 .container {
     max-width: 100vh;
     margin-right: auto;
@@ -38,6 +57,9 @@ body {
     padding-top: 20px;   
 }
 
+.container-apology {
+    padding: 25px;
+}
 .container-login {
     width: 1000px;
     margin-right: auto;
@@ -47,11 +69,22 @@ body {
     padding-top: 20px;
 }
 
+.container-profile {
+    max-width: 75vh;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 20px;
+}
+
+
 .container-flex {
     display: flex;
     flex-direction: column;
 }
 .container-fullscreen {
+    padding-top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -83,11 +116,41 @@ body {
     width: 100%;
 }
 
+.form-check-label {
+    color: black;
+}
+
 .darkened-image {
-    filter: brightness(85%);
+    filter: brightness(75%);
+}
+
+.event-card-container {
+    max-width: 100vh;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 25px;
+    padding-top: 25px;   
 }
 
 h1 {
+    color:white;
+}
+
+h4 {
+    color:white;
+}
+
+h2 {
+    color: white;
+}
+
+.info {
+
+}
+
+strong {
     color:white;
 }
 
@@ -108,6 +171,11 @@ label {
 .nav-link{
     padding: 0rem;
 }
+
+p {
+    color: white;
+}
+
 .panel-body {
     perspective: 800px;
     padding-left: 25px;
@@ -126,6 +194,9 @@ label {
 }
 
 
+.rows {
+    flex-direction: row;
+}
 
 .text-center {
     text-align: center;

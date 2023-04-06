@@ -42,32 +42,6 @@
       {% endfor %}  
   </tbody>
 </table> 
-{% endblock %}
-
-<h2>Match Results</h2>
-
-<table class="table table-dark table-striped">
-  <thead>
-      <tr>
-          <th>Division</th>
-          <th>Match Id</th>
-          <th>Winner</th>
-          <th>Method</th>
-      </tr>
-  </thead> 
-  <tbody>
-    {% for result in results %}
-      <tr>
-          <td>{{ result['div_name'] }}</td>
-          <td>{{ result['id'] }}</td>
-          <td>{{ result['winner'] }}</td>
-          <td>{{ result['method']| capitalize  }}</td>
-          <td>
-        </td>
-      </tr>
-      {% endfor %}    
-  </tbody>
-</table> 
 
 <h2>Division Results</h2>
 
@@ -75,8 +49,8 @@
   <thead>
       <tr>
           <th>Division</th>
-          <th>Gold Medal</th>
-          <th>Silver Medal</th>
+          <th><img src="/static/images/gold-medal-svgrepo-com.svg" width="30" height="30" alt="gold"></th>
+          <th><img src="/static/images/silver-medal-svgrepo-com.svg" width="30" height="30" alt="silver"></th>
       </tr>
   </thead>
   <tbody>
@@ -93,3 +67,33 @@
       </tr>
   </tbody>
 </table>
+
+<h2>Match Results</h2>
+
+<table class="table table-dark table-striped">
+  <thead>
+      <tr>
+          <th>Division</th>
+          <th>Competitor</th>
+          <th>Competitor</th>
+          <th>Winner</th>
+          <th>Method</th>
+      </tr>
+  </thead> 
+  <tbody>
+    {% for result in results %}
+      <tr>
+          <td>{{ result['div_name'] }}</td>
+          <td>{{ result['competitor1_name'] }}</td>
+          <td>{{ result['competitor2_name'] }}</td>
+          <td>{{ result['winner'] }}</td>
+          <td>{{ result['method']| capitalize  }}</td>
+          <td>
+        </td>
+      </tr>
+      {% endfor %}    
+  </tbody>
+</table> 
+
+
+{% endblock %}
