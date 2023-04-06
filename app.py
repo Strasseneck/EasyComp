@@ -198,8 +198,37 @@ def competition(name):
     rows = db.execute("SELECT DISTINCT info FROM competitions WHERE id = ?", comp_id)
     info = rows[0]["info"]
 
+    # get registrations count
+
+    # division objects
+    registrations = 0 
+    divisions = {}
+    divnames = []
+    divids = []
+
+    # get division names and ids
+    rows = db.execute("SELECT DISTINCT id, name FROM divisions WHERE comp_id = ?", comp_id)
+    for i in range(len(rows)):
+        divname = rows[i]["name"]
+        divnames.append(divname)
+        divid = rows[i]["id"] 
+        divids.append(divid)
+        divisions[divname] = []
+
+    # get competitors names for each division
+    for i in range(len(divids)):
+        competitors = []
+        divid = divids[i] 
+        divname = divnames[i]
+        rows = db.execute("SELECT DISTINCT firstname, lastname FROM users INNER JOIN competitors on competitors.competitor_id = users.id WHERE division_id = ?", divid)
+        if len(rows) != 0:
+            for j in range(len(rows)):
+                competitor = (rows[j]["firstname"] + " " + rows[j]["lastname"])
+                registrations += 1
+             
+
     # render template
-    return render_template("competition.html", info=info, name=name)
+    return render_template("competition.html", info=info, name=name, registrations=registrations)
 
 ## ROUTES FOR ORGANIZERS ##
 
@@ -278,19 +307,10 @@ def yourcompetition(name):
     rows = db.execute("SELECT DISTINCT info FROM competitions WHERE id = ?", comp_id)
     info = rows[0]["info"]
 
-    # render template
-    return render_template("yourcompetition.html", info=info, name=name)
+    # get registrations count
 
-# Your competition registrations
-@app.route("/yourcompregistrations/<name>")
-@login_required
-def yourcompregistrations(name):
-
-    # get comp_id
-    rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name = ?", name)
-    comp_id = rows[0]["id"]
-
-    # division objects 
+    # division objects
+    registrations = 0 
     divisions = {}
     divnames = []
     divids = []
@@ -313,21 +333,88 @@ def yourcompregistrations(name):
         if len(rows) != 0:
             for j in range(len(rows)):
                 competitor = (rows[j]["firstname"] + " " + rows[j]["lastname"])
+                registrations += 1
+
+    # render template
+    return render_template("yourcompetition.html", info=info, name=name, registrations=registrations)
+
+# Your competition registrations
+@app.route("/yourcompregistrations/<name>")
+@login_required
+def yourcompregistrations(name):
+
+    # get comp_id
+    rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name = ?", name)
+    comp_id = rows[0]["id"]
+
+    # division objects 
+    divisions = {}
+    divnames = []
+    divids = []
+    registrations = 0
+
+    # get division names and ids
+    rows = db.execute("SELECT DISTINCT id, name FROM divisions WHERE comp_id = ?", comp_id)
+    for i in range(len(rows)):
+        divname = rows[i]["name"]
+        divnames.append(divname)
+        divid = rows[i]["id"] 
+        divids.append(divid)
+        divisions[divname] = []
+
+    # get competitors names for each division
+    for i in range(len(divids)):
+        competitors = []
+        divid = divids[i] 
+        divname = divnames[i]
+        rows = db.execute("SELECT DISTINCT firstname, lastname FROM users INNER JOIN competitors on competitors.competitor_id = users.id WHERE division_id = ?", divid)
+        if len(rows) != 0:
+            for j in range(len(rows)):
+                competitor = (rows[j]["firstname"] + " " + rows[j]["lastname"])
+                registrations += 1
                 competitors.append(competitor)
             # add values to divisions dict        
             divisions[divname] = competitors
         
     # render template
-    return render_template("yourcompregistrations.html", divisions=divisions, name=name)
+    return render_template("yourcompregistrations.html", divisions=divisions, name=name, registrations=registrations)
 
 # Your competition brackets
 @app.route("/yourcompbrackets/<name>", methods=["GET"])
 @login_required
 def yourcompbrackets(name):
 
-    #get id and name of competition
+    # get id and name of competition
     rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name LIKE ?", name)
     comp_id = rows[0]["id"]
+
+    # get registrations count
+
+    # division objects
+    registrations = 0 
+    divisions = {}
+    divnames = []
+    divids = []
+
+    # get division names and ids
+    rows = db.execute("SELECT DISTINCT id, name FROM divisions WHERE comp_id = ?", comp_id)
+    for i in range(len(rows)):
+        divname = rows[i]["name"]
+        divnames.append(divname)
+        divid = rows[i]["id"] 
+        divids.append(divid)
+        divisions[divname] = []
+
+    # get competitors names for each division
+    for i in range(len(divids)):
+        competitors = []
+        divid = divids[i] 
+        divname = divnames[i]
+        rows = db.execute("SELECT DISTINCT firstname, lastname FROM users INNER JOIN competitors on competitors.competitor_id = users.id WHERE division_id = ?", divid)
+        if len(rows) != 0:
+            for j in range(len(rows)):
+                competitor = (rows[j]["firstname"] + " " + rows[j]["lastname"])
+                registrations += 1
     
     # get brackets
     matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
@@ -336,7 +423,7 @@ def yourcompbrackets(name):
     results = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name, winner, method FROM matchresults WHERE comp_id = ?", comp_id)
     medallists = db.execute("SELECT DISTINCT div_name, gold, silver FROM competitionresults WHERE comp_id = ?", comp_id)
 
-    return render_template("yourcompbrackets.html", matches=matches, name=name, results=results, medallists=medallists)
+    return render_template("yourcompbrackets.html", matches=matches, name=name, results=results, medallists=medallists, registrations=registrations)
 
 
 # Generate brackets if not already generated
@@ -421,15 +508,6 @@ def generatebrackets(name):
         matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
         return render_template("yourcompbrackets.html", matches=matches, name=name)
        
-
-
-    # get divname
-    rows = db.execute("SELECT DISTINCT name FROM divisions WHERE id = ?", division)
-    divname = rows[0]["name"]
-
-    # get brackets
-    matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE div_id = ?", division)
-    return render_template("startdivision.html", matches=matches, divname=divname)
     
 # Start match as organizer
 @app.route("/match/<id>", methods=["POST"])
@@ -597,6 +675,7 @@ def registrations(name):
     divisions = {}
     divnames = []
     divids = []
+    registrations = 0
 
     # get division names and ids
     rows = db.execute("SELECT DISTINCT id, name FROM divisions WHERE comp_id = ?", comp_id)
@@ -616,12 +695,13 @@ def registrations(name):
         if len(rows) != 0:
             for j in range(len(rows)):
                 competitor = (rows[j]["firstname"] + " " + rows[j]["lastname"])
+                registrations += 1
                 competitors.append(competitor)
             # add values to divisions dict        
             divisions[divname] = competitors
         
     # render template
-    return render_template("registrations.html", divisions=divisions, name=name)
+    return render_template("registrations.html", divisions=divisions, name=name, registrations=registrations)
 
 # view brackets as competitor
 @app.route("/brackets/<name>", methods=["GET"])
@@ -631,10 +711,38 @@ def brackets(name):
     #get id and name of competition
     rows = db.execute("SELECT DISTINCT id FROM competitions WHERE name LIKE ?", name)
     comp_id = rows[0]["id"]
+
+    # get registrations count
+
+    # division objects
+    registrations = 0 
+    divisions = {}
+    divnames = []
+    divids = []
+
+    # get division names and ids
+    rows = db.execute("SELECT DISTINCT id, name FROM divisions WHERE comp_id = ?", comp_id)
+    for i in range(len(rows)):
+        divname = rows[i]["name"]
+        divnames.append(divname)
+        divid = rows[i]["id"] 
+        divids.append(divid)
+        divisions[divname] = []
+
+    # get competitors names for each division
+    for i in range(len(divids)):
+        competitors = []
+        divid = divids[i] 
+        divname = divnames[i]
+        rows = db.execute("SELECT DISTINCT firstname, lastname FROM users INNER JOIN competitors on competitors.competitor_id = users.id WHERE division_id = ?", divid)
+        if len(rows) != 0:
+            for j in range(len(rows)):
+                competitor = (rows[j]["firstname"] + " " + rows[j]["lastname"])
+                registrations += 1
     
     # get brackets
     matches = db.execute("SELECT DISTINCT id, div_name, competitor1_name, competitor2_name FROM matches WHERE comp_id = ?", comp_id)
-    return render_template("brackets.html", matches=matches, name=name)
+    return render_template("brackets.html", matches=matches, name=name, registrations=registrations)
 
 # enter division as competitor
 @app.route("/enterdivision/<name>", methods=["GET"])

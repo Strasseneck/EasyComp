@@ -2,29 +2,38 @@
 
 {% block main %}
 
-<h2>{{ name }}</h2> 
+<div class="container-fullscreen">
+  <div class="panel-body">
+    <div class="col">
+      <div class="row">
+          <div class="row">
+            <nav class="navbar navbar-expand-lg text-white navbar-dark bg-dark">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                  <a class="nav-link active" aria-current="page" href="/yourcompetition/{{ name }}"><span>Information</span></a>
+                  <a class="nav-link" href="/yourcompregistrations/{{ name }}"><span>Registrations  <span class="badge rounded-pill bg-light text-dark">{{ registrations }}</span></span></a>
+                  <a class="nav-link" href="/yourcompbrackets/{{ name }}"><span>Brackets / Results</span></a>
+                  <form action="/end/{{ name }}" method="post">
+                    <button type="submit" class="btn btn-primary btn-sm">End Competition</button>
+                  </form>
+                </div>
+              </div> 
+            </nav> 
+          </div>
+      </div>
 
-<form action="/end/{{ name }}" method="post">
-  <button type="submit" class="btn btn-primary">End Competition</button>
-</form>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link active" aria-current="page" href="/yourcompetition/{{ name }}">Info</a>
-          <a class="nav-link" href="/yourcompregistrations/{{ name }}">Registrations</a>
-          <a class="nav-link" href="/yourcompbrackets/{{ name }}">Brackets / Results</a>
+      <div class="col-sm-7">
+        <div class="info">
+          <h2><img src="/static/images/trophy-icon.png" width="30" height="30" alt="trophy"><strong>  {{ name }}</strong></h2>
+          <div class="row">  
+              <p>{{ info }}</p>
+          </div>
         </div>
       </div>
     </div>
-  </nav>
-
-  <div class="container-fluid">
-    <p>{{ info }}</p>
   </div>
-
+</div>
 {% endblock %}

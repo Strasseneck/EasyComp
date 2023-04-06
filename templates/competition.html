@@ -2,11 +2,9 @@
 
 {% block main %}
 <div class="container-fullscreen">
-  <div class="container">
-
+  <div class="panel-body">
     <div class="col">
       <div class="row">
-        <h2><img src="/static/images/trophy-icon.png" width="30" height="30" alt="trophy"><strong>  {{ name }}</strong></h2>
           <div class="row">
             <nav class="navbar navbar-expand-lg text-white navbar-dark bg-dark">
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,21 +12,25 @@
               </button>
               <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                  <a class="nav-link active" aria-current="page" href="/competition/{{ name }}">Info</a>
-                  <a class="nav-link" href="/registrations/{{ name }}">Registrations</a>
-                  <a class="nav-link" href="/brackets/{{ name }}">Brackets / Results</a>
+                  <a class="nav-link active" aria-current="page" href="/competition/{{ name }}"><span>Information</span></a>
+                  <a class="nav-link" href="/registrations/{{ name }}"><span>Registrations  <span class="badge rounded-pill bg-light text-dark">{{ registrations }}</span></span></a>
+                  <a class="nav-link" href="/brackets/{{ name }}"><span>Brackets / Results</span></a>
                 </div>
               </div> 
             </nav> 
           </div>
       </div>
-      <div class="row">
-        <h5><strong>{{ info }}</strong></h5>
+
+      <div class="col-sm-7">
+        <div class="info">
+          <h2><img src="/static/images/trophy-icon.png" width="30" height="30" alt="trophy"><strong>  {{ name }}</strong></h2>
+          <div class="row">  
+              <p>{{ info }}</p>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
-
 </div>
 
 

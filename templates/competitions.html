@@ -6,7 +6,7 @@
 
 {% block main %}
 
-<div class="container-fullscreen">
+<div class="container-fullscreen rows">
 
 {% for competition in competitions %}
 
@@ -16,15 +16,12 @@
     <div class="card-img-overlay card-image">
       <h5 class="card-title"><img src="/static/images/trophy-icon.png" width="30" height="30" alt="trophy"><strong> {{competition['name'] | upper }}</strong></h5>
       <div class="card-body">
-        <h6 class="card-subtitle">{{ competition['format']}}</h6>
-        <p class="card-text">{{ competition['info'] }}</p>
+        <h6 class="card-subtitle"><strong>{{ competition['format']}}</strong></h6>
         <a class="nav-link" href="/competition/{{competition['name']}}"><button class="btn btn-secondary btn-block">View Competition Page</button></a>
       </div>
     </div>
   </div>
 </div>
-
-
 
 {% endfor %}
 
