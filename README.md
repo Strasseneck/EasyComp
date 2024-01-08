@@ -2,6 +2,10 @@ Easy Comp
 
 Easy comp is a jiu jitsu tournament organization web application, made for my Cs50 Final Project. It's the first fullstack web app I ever made after only 12 weeks of programming with Cs50.
 
+# Stack 
+
+Flask and SQLlite on the back-end, Javascript on the front-end. 
+
 # Features 
 
 Easy Comp allows you to both organize and enter events, organizes brackets based on single round elimination and displays results for the event and individual user. 
