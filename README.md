@@ -4,7 +4,7 @@ Easy comp is a jiu jitsu tournament organization web application, made for my Cs
 
 # Stack 
 
-Flask and SQLlite on the back-end, Javascript on the front-end. 
+Flask and SQLlite on the backend, vanilla Javascript, HTML and CSS on the frontend. 
 
 # Features 
 
@@ -16,6 +16,6 @@ Easy Comp allows you to both organize and enter events, organizes brackets based
 
 * Enter event page that dynamically displays all the available competitions.
 
-# Youtube video demo
+# Youtube Dem0
 
-link : https://youtu.be/5J-Hixh_1RI
+[![IMAGE ALT TEXT](https://ibb.co/K9BtVDz)](https://www.youtube.com/watch?v=5J-Hixh_1RI)
