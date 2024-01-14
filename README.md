@@ -18,4 +18,4 @@ Easy Comp allows you to both organize and enter events, organizes brackets based
 
 # Youtube Dem0
 
-[![IMAGE ALT TEXT](https://ibb.co/K9BtVDz)](https://www.youtube.com/watch?v=5J-Hixh_1RI)
+[![IMAGE ALT TEXT](https://i.ibb.co/zSC3PFH/EasyComp.jpg)](https://www.youtube.com/watch?v=5J-Hixh_1RI)
