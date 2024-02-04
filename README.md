@@ -16,6 +16,8 @@ Easy Comp allows you to both organize and enter events, organizes brackets based
 
 * Enter event page that dynamically displays all the available competitions.
 
+* Dynamically generate brackets and matches for full tournament management. 
+
 # Youtube Video Demo 
 
 [![IMAGE ALT TEXT](https://i.ibb.co/zSC3PFH/EasyComp.jpg)](https://www.youtube.com/watch?v=5J-Hixh_1RI)
